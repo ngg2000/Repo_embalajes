@@ -1,0 +1,7 @@
+.vercel/
+.env
+.env.*
+*.xlsx
+*.xls
+*.csv
+registro_unico_embalajes*.json

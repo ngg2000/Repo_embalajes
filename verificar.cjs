@@ -1,0 +1,24 @@
+// Ejecutar con Node.js: node verificar.cjs
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const html=fs.readFileSync(__dirname+'/public/index.html','utf8');
+const scripts=[...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
+assert.deepEqual(JSON.parse(scripts[0]),[]);
+new vm.Script(scripts[1]);
+const context={TextEncoder};vm.createContext(context);
+vm.runInContext(scripts[1].split('// CORE_START')[1].split('// CORE_END')[0],context);
+const c=context.RegistroCore,k=c.FIELDS.map(f=>f.key);
+assert.equal(k.length,15);
+const input=Object.fromEntries(k.map(x=>[x,null]));
+Object.assign(input,{[k[0]]:'PRUEBA-001',[k[1]]:'CQCA-PRUEBA-001',[k[3]]:'1',[k[4]]:'0,5',[k[5]]:'0,4',[k[6]]:'4',[k[13]]:'10'});
+const record=c.derive(c.normaliseRecord(input)).record;
+assert.equal(record[k[8]],0.2);assert.equal(record[k[7]],40);
+const rows=c.upsert([],record);assert.equal(rows.length,1);
+assert.throws(()=>c.upsert(rows,record));
+const edited={...record,[k[2]]:'CAJA-PRUEBA'};
+const result=c.upsert(rows,edited,c.recordKey(record));assert.equal(result.length,1);assert.equal(result[0][k[2]],'CAJA-PRUEBA');
+const copy=c.fromSnapshot(c.makeSnapshot(result,1,0,null,null));assert.equal(copy[0][k[0]],'PRUEBA-001');
+assert.equal(JSON.parse(JSON.stringify(copy))[0][k[14]],null);
+fs.writeFileSync('/tmp/etapa1-verificacion.xlsx',c.makeXlsxBytes(copy));
+assert(html.includes('Etapa 1 · versión 0.1.0'));
+assert(!html.includes('cqca-sin-pn-20261013'));
+console.log('OK: registro vacío, sintaxis, 15 campos, cálculos, alta, edición, duplicados, guardado local y generación XLSX.');
