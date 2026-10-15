@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Embalajes · Prueba de conexión</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f4f6;color:#1b2330;
+font:16px/1.5 system-ui,sans-serif}
+header{background:#1e2935;color:white;padding:20px}
+main{max-width:1100px;margin:auto;padding:24px}
+section{background:white;padding:24px;border:1px solid #d6dae1;
+border-radius:12px;margin-bottom:20px}
+h1{font-size:23px;margin:0}
+h2{font-size:19px;margin-top:0}
+label{display:block;margin:12px 0}
+input,button{font:inherit;padding:10px;border:1px solid #bfc6cf;
+border-radius:7px}
+input{display:block;width:100%;margin-top:5px}
+button{cursor:pointer;background:#e5a00d;color:#1b2330}
+button:disabled{opacity:.5;cursor:default}
+form{max-width:420px}
+.note{color:#596476}
+#mensaje{white-space:pre-wrap;overflow-wrap:anywhere}
+.tabla{overflow:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:10px;text-align:left;border-bottom:1px solid #d6dae1}
+th{background:#eef0f3}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <h1>Registro de embalajes · Etapa 2</h1>
+</header>
+<main>
+  <p class="note">
+    Prueba de conexión: inicio de sesión y consulta.
+    Esta página no agrega ni modifica registros.
+  </p>
+
+  <section id="acceso">
+    <h2>Ingresar</h2>
+    <form id="formulario">
+      <label>Correo
+        <input id="correo" type="email" autocomplete="username" required>
+      </label>
+      <label>Contraseña de la aplicación
+        <input id="clave" type="password"
+          autocomplete="current-password" required>
+      </label>
+      <button id="ingresar" type="submit">Iniciar sesión</button>
+    </form>
+  </section>
+
+  <section id="consulta" hidden>
+    <h2>Tabla de Supabase</h2>
+    <p id="identidad"></p>
+    <button id="actualizar" type="button">Actualizar consulta</button>
+    <button id="salir" type="button">Cerrar sesión</button>
+    <p id="cantidad"></p>
+    <div class="tabla">
+      <table>
+        <thead>
+          <tr>
+            <th>Part Number</th>
+            <th>Part number CQCA</th>
+            <th>Medio secundario</th>
+            <th>Medio primario</th>
+          </tr>
+        </thead>
+        <tbody id="filas"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <p id="mensaje" role="status" aria-live="polite"></p>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
+<script>
+'use strict';
+
+const URL_PROYECTO = 'https://enacfespoldfksedmxuf.supabase.co';
+const CLAVE_PUBLICA = 'sb_publishable_z_W0qS3p6v_7CxFHxdkwAg_bQGQRWdL';
+
+const $ = id => document.getElementById(id);
+let cliente, generacion = 0, vencimiento;
+
+function mensaje(texto) {
+  $('mensaje').textContent = texto;
+}
+
+function limpiarPantalla() {
+  generacion++;
+  clearTimeout(vencimiento);
+  $('consulta').hidden = true;
+  $('acceso').hidden = false;
+  $('identidad').textContent = '';
+  $('cantidad').textContent = '';
+  $('filas').replaceChildren();
+  $('clave').value = '';
+}
+
+async function fetchConTiempo(url, opciones = {}) {
+  const controlador = new AbortController();
+  const cancelar = () => controlador.abort();
+  const señalOriginal = opciones.signal;
+  if (señalOriginal?.aborted) controlador.abort();
+  señalOriginal?.addEventListener('abort', cancelar, {once:true});
+  const reloj = setTimeout(cancelar, 20000);
+  try {
+    return await fetch(url, {...opciones, signal:controlador.signal});
+  } finally {
+    clearTimeout(reloj);
+    señalOriginal?.removeEventListener('abort', cancelar);
+  }
+}
+
+async function cerrarSesion() {
+  limpiarPantalla();
+  $('ingresar').disabled = true;
+  mensaje('Cerrando sesión…');
+  try {
+    const {error} = await cliente.auth.signOut({scope:'local'});
+    mensaje(error
+      ? 'Los datos se ocultaron, pero no se pudo confirmar el cierre en Supabase. Recargá la página para descartar la sesión de esta prueba.'
+      : 'Sesión cerrada. Los datos ya no están visibles.');
+  } catch {
+    mensaje('Los datos se ocultaron. Recargá la página para descartar la sesión de esta prueba.');
+  } finally {
+    $('ingresar').disabled = false;
+  }
+}
+
+async function consultar() {
+  const turno = generacion;
+  $('actualizar').disabled = true;
+  $('filas').replaceChildren();
+  $('cantidad').textContent = '';
+  mensaje('Consultando Supabase…');
+
+  try {
+    const {data, error, count} = await cliente
+      .from('embalajes')
+      .select(
+        'id,part_number,part_number_cqca,tipo_medio_secundario,tipo_medio_primario',
+        {count:'exact'}
+      )
+      .order('id', {ascending:true})
+      .range(0,49);
+
+    if (turno !== generacion) return;
+    if (error) throw error;
+
+    for (const registro of data) {
+      const fila = document.createElement('tr');
+      for (const campo of [
+        'part_number', 'part_number_cqca',
+        'tipo_medio_secundario', 'tipo_medio_primario'
+      ]) {
+        const celda = document.createElement('td');
+        celda.textContent = registro[campo] ?? '';
+        fila.append(celda);
+      }
+      $('filas').append(fila);
+    }
+
+    $('cantidad').textContent =
+      `Registros visibles: ${count}. Se muestran como máximo 50.`;
+
+    mensaje(data.length
+      ? 'Consulta completada correctamente.'
+      : 'Consulta completada. No hay registros visibles para esta cuenta.');
+  } catch (error) {
+    if (turno === generacion) {
+      mensaje('No se pudo completar la consulta. ' +
+        (error.message || 'Revisá la conexión y los permisos.'));
+    }
+  } finally {
+    if (turno === generacion) $('actualizar').disabled = false;
+  }
+}
+
+$('formulario').addEventListener('submit', async evento => {
+  evento.preventDefault();
+  if (!cliente) return;
+
+  $('ingresar').disabled = true;
+  mensaje('Iniciando sesión…');
+  const turno = ++generacion;
+
+  try {
+    const {data, error} = await cliente.auth.signInWithPassword({
+      email: $('correo').value.trim(),
+      password: $('clave').value
+    });
+    if (turno !== generacion) return;
+    if (error) throw error;
+    if (!data.session || !data.user) throw new Error('No se recibió una sesión.');
+
+    $('acceso').hidden = true;
+    $('consulta').hidden = false;
+    $('identidad').textContent = `Usuario: ${data.user.email}`;
+
+    clearTimeout(vencimiento);
+    vencimiento = setTimeout(() => {
+      cerrarSesion();
+    }, Math.max(0, data.session.expires_at * 1000 - Date.now()));
+
+    await consultar();
+  } catch (error) {
+    if (turno === generacion) {
+      mensaje('No se pudo iniciar sesión. ' +
+        (error.message || 'Revisá el correo y la contraseña.'));
+    }
+  } finally {
+    $('clave').value = '';
+    $('ingresar').disabled = false;
+  }
+});
+
+$('actualizar').addEventListener('click', consultar);
+$('salir').addEventListener('click', cerrarSesion);
+
+try {
+  if (!window.supabase) throw new Error('No se pudo cargar la biblioteca de Supabase.');
+  cliente = window.supabase.createClient(URL_PROYECTO, CLAVE_PUBLICA, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false
+    },
+    global: {fetch: fetchConTiempo}
+  });
+  mensaje('Página lista. Ingresá con el usuario creado en Authentication.');
+} catch (error) {
+  $('ingresar').disabled = true;
+  mensaje(error.message);
+}
+</script>
+</body>
+</html>
