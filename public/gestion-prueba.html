@@ -263,17 +263,17 @@ dl.specs dd{margin:0;font-weight:600}
   .summary{grid-template-columns:1fr 1fr}
   .toolbar select{width:100%}
 }
-/* Integración, etapa 1: Córdoba permanece montado al cambiar de sección. */
+/* Una sola página, con datos independientes para cada planta. */
 [hidden]{display:none!important}
 .integration-notice{max-width:1320px;margin:16px auto 0;padding:12px 20px;background:#fff7df;border:1px solid #e6c86e;border-radius:10px;color:#584414;font-size:13px;line-height:1.5}
 .online-login{max-width:540px;margin:60px auto;padding:0 16px}.online-login h1{font-size:24px}.online-login input{display:block;width:100%;min-height:42px;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font:inherit;background:var(--surface);color:var(--text)}.online-error{background:#fff0f0;color:#9c1c1c;border-color:#df7d7d}#onlineEmail{font-size:12px;color:#e6edf3;max-width:240px;overflow-wrap:anywhere}.integration-notice strong{display:block}
-#cordobaPanel{max-width:1500px;margin:0 auto;padding:16px}
+#cordobaPanel{max-width:1500px;margin:0 auto;padding:0 24px}
 .cordoba-heading{padding:0 4px 14px}
 .cordoba-heading h1{font-size:22px;margin:0 0 8px}
 .cordoba-heading p{margin:0 0 8px;color:var(--muted)}
-#cordobaFrame{display:block;width:100%;height:calc(100dvh - 220px);min-height:600px;border:1px solid var(--border);border-radius:12px;background:white}
+
 nav.tabs{flex-wrap:wrap}
-@media(max-width:600px){.integration-notice{margin:12px}.cordoba-heading h1{font-size:20px}#cordobaPanel{padding:12px}#cordobaFrame{min-height:650px}}
+@media(max-width:600px){.integration-notice{margin:12px}.cordoba-heading h1{font-size:20px}#cordobaPanel{max-width:1500px;margin:0 auto;padding:0 24px}}
 </style>
 </head>
 <body>
@@ -287,7 +287,7 @@ nav.tabs{flex-wrap:wrap}
       <div class="brand-mark" aria-hidden="true">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
       </div>
-      <div>Gestión de Embalajes<small>Palomar · Catálogo e inventario de racks</small></div>
+      <div>Gestión de Embalajes<small id="appSubtitle">Palomar · Catálogo e inventario de racks</small></div>
     </div>
     <nav class="tabs" aria-label="Secciones">
       <button data-view="tablero">Tablero</button>
@@ -296,7 +296,7 @@ nav.tabs{flex-wrap:wrap}
       <button data-view="inventario">Inventario · próximo paso</button>
       <button data-view="historial">Historial · próximo paso</button>
       <button data-action="datos" id="datosPalomar">Datos Palomar</button>
-      <button id="onlineRefresh">Actualizar Palomar</button><span id="onlineEmail"></span><button id="onlineLogout">Cerrar sesión</button>
+      <button id="datosCordoba" hidden>Datos y respaldo Córdoba</button><button id="onlineRefresh">Actualizar Palomar</button><span id="onlineEmail"></span><button id="onlineLogout">Cerrar sesión</button>
       <button data-view="cordoba">Córdoba · Registro PN</button>
     </nav>
   </div>
@@ -304,12 +304,7 @@ nav.tabs{flex-wrap:wrap}
 
 <aside id="onlineNotice" class="integration-notice" role="status">Palomar conectado.</aside>
 <main id="main" tabindex="-1"></main>
-<section id="cordobaPanel" aria-labelledby="cordobaTitle" hidden>
-  <div class="cordoba-heading"><h1 id="cordobaTitle">Córdoba · Registro de piezas</h1>
-  <p>Registro independiente con Part Number y CQCA. Sin inventarios. Usa la misma sesión de esta aplicación.</p>
-  <a href="./index.html" target="_blank" rel="noopener">Abrir Córdoba en otra pestaña</a></div>
-  <iframe id="cordobaFrame" title="Registro de embalajes de Córdoba" data-src="./cordoba-integrado.html"></iframe>
-</section></div>
+<section id="cordobaPanel" aria-label="Córdoba · Registro de piezas" hidden><div id="cordobaContent"></div></section></div>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <datalist id="dl_tipos">
@@ -397,6 +392,7 @@ nav.tabs{flex-wrap:wrap}
 <!-- Imagen ampliada -->
 <dialog id="dlgImg" aria-labelledby="imgTitle"><div class="dlg-wrap"><header class="dlg-head"><h2 id="imgTitle" style="font-size:15px"></h2><button type="button" class="icon-btn" data-close aria-label="Cerrar" style="color:#ddd">×</button></header><img id="imgBig" alt=""></div></dialog>
 
+<script src="./cordoba-registro.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
 <script>
 'use strict';
@@ -583,7 +579,9 @@ const state = { embalajes: [], inventarios: [], draft: null, ultimoRespaldo: nul
 /* ================= Navegación ================= */
 function ir(view){
   if(!palomarUser||palomarBusy)return;
+  if(cordobaController?.isBusy()){toast('Esperá a que termine el guardado de Córdoba.','error');return;}
   state.view = view;
+  $('#appSubtitle').textContent=view==='cordoba'?'Córdoba · Registro de piezas y embalajes':'Palomar · Catálogo e inventario de racks';
   $$('nav.tabs button[data-view]').forEach(b => {
     if (b.dataset.view === view) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
   });
@@ -597,9 +595,12 @@ function render(){
   $('#cordobaPanel').hidden = !cordoba;
   $('#datosPalomar').hidden = cordoba;
   $('#onlineNotice').hidden = cordoba;
+  $('#onlineRefresh').hidden=cordoba;$('#datosCordoba').hidden=!cordoba;
   if (cordoba) {
-    const frame = $('#cordobaFrame');
-    if (!frame.getAttribute('src')) frame.setAttribute('src', frame.dataset.src);
+    if(!cordobaController){
+      cordobaController=window.mountCordobaRegistro($('#cordobaContent'),{client:palomarClient,user:palomarUser,isVisible:()=>Boolean(palomarUser&&state.view==='cordoba'),onStatus:palomarControls});
+    }else cordobaController.refresh();
+    cordobaController.setView(cordobaView);
     return;
   }
   const m = $('#main');
@@ -923,9 +924,10 @@ const PALOMAR_URL='https://enacfespoldfksedmxuf.supabase.co';
 const PALOMAR_KEY='sb_publishable_z_W0qS3p6v_7CxFHxdkwAg_bQGQRWdL';
 let palomarClient=null,palomarUser=null,palomarEpoch=0,palomarTimer=null,palomarReading=false,palomarBusy=false,palomarReady=false;
 let formBlocked=false,formInitial='';
+let cordobaController=null,cordobaView='registro';
 function palomarNotice(message,error=false){const el=$('#onlineNotice');el.textContent=message;el.classList.toggle('online-error',error);}
 function palomarControls(){
-  $('#onlineLogout').disabled=palomarBusy;
+  $('#onlineLogout').disabled=palomarBusy||Boolean(cordobaController?.isBusy());
   $('#onlineRefresh').disabled=palomarBusy||palomarReading||!palomarUser;
   $$('[data-action="nuevo"]').forEach(b=>b.disabled=palomarBusy||palomarReading||!palomarReady);
   $('#btnGuardar').disabled=palomarBusy||formBlocked||!palomarReady;
@@ -943,10 +945,10 @@ function palomarLock(message='Ingresá con tu cuenta de la aplicación.'){
   $('#main').replaceChildren();$('#toast').replaceChildren();$('#dl_prov').replaceChildren();
   $('#detWrap').replaceChildren();$('#ciWrap').replaceChildren();$('#ivWrap').replaceChildren();
   $('#palomarApp').hidden=true;$('#loginPalomar').hidden=false;$('#onlineEmail').textContent='';$('#pPassword').value='';$('#pLoginMessage').textContent=message;
-  const frame=$('#cordobaFrame');frame.removeAttribute('src');$('#cordobaPanel').hidden=true;
+  cordobaController?.destroy();cordobaController=null;cordobaView='registro';$('#datosCordoba').textContent='Datos y respaldo Córdoba';$('#cordobaPanel').hidden=true;
   $('#main').hidden=false;$('#datosPalomar').hidden=false;$('#onlineLoginSubmit').disabled=false;palomarControls();
 }
-window.getEmbalajesIntegration=()=>palomarUser?{client:palomarClient,user:palomarUser}:null;
+
 async function palomarTimedFetch(url,options={}){
   const c=new AbortController(),abort=()=>c.abort(),sig=options.signal;if(sig?.aborted)c.abort();sig?.addEventListener('abort',abort,{once:true});
   const timer=setTimeout(abort,20000);try{return await fetch(url,{...options,signal:c.signal});}finally{clearTimeout(timer);sig?.removeEventListener('abort',abort);}
@@ -981,9 +983,8 @@ async function palomarLogin(event){
 }
 async function palomarLogout(){
   if(palomarBusy)return;
-  const child=$('#cordobaFrame').contentWindow;
-  if(child?.cordobaIntegrationBusy?.()){toast('Esperá a que termine el guardado de Córdoba.','error');return;}
-  const dirty=($('#dlgForm').open&&JSON.stringify(palomarFormValues())!==formInitial)||child?.cordobaIntegrationDirty?.();
+  if(cordobaController?.isBusy()){toast('Esperá a que termine el guardado de Córdoba.','error');return;}
+  const dirty=($('#dlgForm').open&&JSON.stringify(palomarFormValues())!==formInitial)||cordobaController?.isDirty();
   if(dirty&&!window.confirm('Hay cambios sin guardar. ¿Cerrar sesión y descartarlos?'))return;
   palomarLock('Sesión cerrada.');$('#onlineLoginSubmit').disabled=true;
   try{const {error}=await palomarClient.auth.signOut({scope:'local'});if(error)$('#pLoginMessage').textContent='La información se ocultó. Recargá la página para descartar la sesión.';}
@@ -1047,12 +1048,18 @@ async function palomarExportCsv(){const token=palomarEpoch;if(await palomarRefre
 $('#pLoginForm').addEventListener('submit',palomarLogin);
 $('#onlineLogout').addEventListener('click',palomarLogout);
 $('#onlineRefresh').addEventListener('click',()=>palomarRefresh());
+$('#datosCordoba').addEventListener('click',()=>{
+ if(!cordobaController||cordobaController.isBusy())return;
+ cordobaView=cordobaView==='registro'?'datos':'registro';cordobaController.setView(cordobaView);
+ $('#datosCordoba').textContent=cordobaView==='datos'?'Volver al registro Córdoba':'Datos y respaldo Córdoba';
+});
 $('#reloadPalomar').addEventListener('click',palomarReloadForm);
 $('#dlgForm').addEventListener('cancel',e=>{if(palomarBusy){e.preventDefault();return;}if(JSON.stringify(palomarFormValues())!==formInitial&&!window.confirm('¿Descartar los cambios sin guardar?'))e.preventDefault();});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)palomarRefresh({quiet:true});});
-window.addEventListener('beforeunload',e=>{if(palomarBusy||($('#dlgForm').open&&JSON.stringify(palomarFormValues())!==formInitial)){e.preventDefault();e.returnValue='';}});
+window.addEventListener('beforeunload',e=>{if(palomarBusy||cordobaController?.isBusy()||cordobaController?.isDirty()||($('#dlgForm').open&&JSON.stringify(palomarFormValues())!==formInitial)){e.preventDefault();e.returnValue='';}});
 palomarLock();
 try{
+  if(typeof window.mountCordobaRegistro!=='function')throw Error('No se pudo cargar Córdoba. Revisá que cordoba-registro.js esté en public y recargá.');
   if(!window.supabase)throw Error('No se pudo cargar la conexión. Revisá la red y recargá la página.');
   palomarClient=window.supabase.createClient(PALOMAR_URL,PALOMAR_KEY,{auth:{persistSession:false,autoRefreshToken:true,detectSessionInUrl:false},global:{fetch:palomarTimedFetch}});
   palomarClient.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'&&palomarUser)palomarLock('La sesión terminó. Ingresá nuevamente.');});
