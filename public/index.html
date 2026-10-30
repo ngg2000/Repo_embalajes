@@ -1,253 +1,1120 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Registro de embalajes · Supabase</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestión de Embalajes · Palomar y Córdoba</title>
 <style>
-:root{--bg:#f3f4f6;--surface:#fff;--surface-2:#eef0f3;--border:#d6dae1;--text:#1b2330;--muted:#596476;--accent:#e5a00d;--accent-hover:#cc8d06;--head:#1e2935;--ok:#17693f;--ok-bg:#dff3e7;--bad:#a8231b;--bad-bg:#fbe5e3;--warn:#7d5200;--warn-bg:#fcefd0;--focus:#2563eb;--shadow:0 1px 2px #1018280f,0 4px 14px #1018280f}
-@media(prefers-color-scheme:dark){:root{--bg:#11151b;--surface:#1a2028;--surface-2:#222a34;--border:#323c49;--text:#e5e9ef;--muted:#9aa5b5;--accent:#f0b53a;--accent-hover:#f6c661;--head:#0c1016;--ok:#62d29b;--ok-bg:#163428;--bad:#ff8b80;--bad-bg:#3c1e1c;--warn:#f6c661;--warn-bg:#3a2d11;--focus:#7ba6ff}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.45}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}h1,h2,h3,p{margin:0}h1{font-size:25px;line-height:1.2}h2{font-size:20px}h3{font-size:16px}.topbar{background:var(--head);color:#f2f4f7}.topbar-in{display:flex;align-items:center;gap:20px;padding:15px 24px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:11px;font-weight:750;font-size:17px}.brand small{display:block;font-size:12px;color:#a9b4c2;font-weight:450}.brand-mark{width:36px;height:36px;border-radius:8px;background:var(--accent);display:grid;place-items:center;color:#1c1300}.tabs{display:flex;gap:5px;margin-left:auto}.tabs button{background:none;border:0;border-radius:8px;padding:8px 14px;color:#c6ced8;font-weight:650}.tabs button[aria-current=page]{background:var(--accent);color:#1c1300}.tabs button:hover{background:#ffffff19}.tabs button[aria-current=page]:hover{background:var(--accent-hover)}main{padding:24px;max-width:1900px;margin:auto}.page-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px}.page-head p{margin-top:6px;color:var(--muted)}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{display:inline-flex;justify-content:center;align-items:center;gap:6px;border:1px solid var(--border);background:var(--surface);padding:9px 14px;border-radius:8px;min-height:40px;font-size:14px;font-weight:650}.btn:hover{background:var(--surface-2)}.btn.primary{background:var(--accent);color:#1c1300;border-color:var(--accent)}.btn.primary:hover{background:var(--accent-hover)}.btn.sm{padding:6px 10px;min-height:34px}.btn.ghost{background:transparent}.panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow)}.panel-pad{padding:20px}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.kpi{padding:16px 18px}.kpi .lbl{color:var(--muted);font-size:12px;font-weight:650}.kpi .val{font-size:28px;font-weight:750;margin:5px 0}.kpi .sub{font-size:12px;color:var(--muted)}.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.search{flex:1;min-width:250px}.toolbar select{width:auto;max-width:260px}input,select{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 10px;min-height:40px;width:100%}input:focus,select:focus{border-color:var(--focus)}.muted{color:var(--muted)}.note{font-size:13px;color:var(--muted)}.state-line{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:12px 0;flex-wrap:wrap;font-size:13px}.dot{display:inline-block;background:var(--ok);width:8px;height:8px;border-radius:50%;margin-right:6px}.grid-wrap{overflow:auto;max-height:65vh;min-height:300px}.grid{border-spacing:0;border-collapse:separate;width:100%;font-size:13px}.grid th,.grid td{border-bottom:1px solid var(--border);border-right:1px solid var(--border);padding:0;min-width:155px}.grid th{background:var(--surface-2);padding:12px 10px;text-align:left;font-size:12px;line-height:1.4;vertical-align:middle;position:sticky;top:0;z-index:3}.grid td{background:var(--surface)}.grid tbody tr:nth-child(even) td{background:var(--surface-2)}.grid td input{border:0;border-radius:0;background:transparent;min-height:40px;font-size:13px;padding:9px 10px}.grid input.numeric{text-align:right;font-variant-numeric:tabular-nums}.grid input:focus{outline:2px solid var(--focus);outline-offset:-2px;background:var(--surface)}.grid th:first-child,.grid td:first-child{position:sticky;left:0;min-width:155px;width:155px;max-width:155px;z-index:2}.grid th:first-child{z-index:5}.pn-link{border:0;background:none;color:var(--text);font-weight:750;text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px;padding:12px 10px;width:100%;text-align:left;overflow-wrap:anywhere}.pn-link:hover{color:var(--warn)}.grid th:nth-child(2){min-width:200px}.grid th:nth-child(3),.grid th:nth-child(10){min-width:180px}.grid th:nth-child(7),.grid th:nth-child(8){min-width:220px}.invalid{background:var(--bad-bg)!important;outline:2px solid var(--bad)!important;outline-offset:-2px}.pagination{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 15px;flex-wrap:wrap}.empty{padding:40px;text-align:center;color:var(--muted)}.notice{padding:12px 15px;background:var(--warn-bg);border:1px solid var(--border);border-radius:9px;color:var(--warn);margin-bottom:15px;font-size:13px}.notice.error{color:var(--bad);background:var(--bad-bg)}.two-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}.data-panel h2{margin-bottom:10px}.data-panel p{margin-bottom:14px;color:var(--muted)}.data-panel ul{padding-left:20px;color:var(--muted)}.data-panel li{margin:8px 0}.tag{font-size:12px;background:var(--surface-2);border-radius:6px;padding:3px 7px}.schema-wrap{overflow:auto;margin-top:14px}.schema-table{width:100%;border-collapse:collapse;font-size:13px}.schema-table td,.schema-table th{text-align:left;padding:8px;border-bottom:1px solid var(--border)}.schema-table th{background:var(--surface-2)}.schema-table td:first-child{overflow-wrap:anywhere}dialog{padding:0;border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--text);box-shadow:0 20px 60px #0005;width:min(920px,calc(100vw - 24px));max-height:calc(100vh - 24px)}dialog.small{width:min(600px,calc(100vw - 24px))}dialog::backdrop{background:#0a0e1490}.dlg-head{padding:17px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:12px}.icon-btn{border:0;background:none;font-size:24px;color:var(--muted);padding:0 8px}.dlg-body{padding:18px 20px;overflow-y:auto;max-height:calc(100vh - 220px)}.dlg-foot{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;padding:14px 20px;border-top:1px solid var(--border)}fieldset{border:1px solid var(--border);border-radius:9px;padding:15px;margin:0 0 16px}legend{font-weight:750;font-size:14px;padding:0 7px}.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.form-grid.ids{grid-template-columns:1fr 1fr}.field label{font-size:13px;font-weight:600;display:block;margin-bottom:5px}.field.full{grid-column:1/-1}.field .hint{font-size:12px;color:var(--muted);margin-top:5px}.field input[readonly]{background:var(--surface-2);color:var(--muted)}.helper{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:13px}.helper p{font-size:12px;color:var(--muted);flex:1;min-width:180px}.err{color:var(--bad);font-size:13px;margin:10px 0}.err:empty{display:none}#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:20;max-width:calc(100vw - 30px);pointer-events:none}.toast{background:var(--head);color:#fff;border-left:4px solid var(--accent);padding:12px 18px;border-radius:9px;box-shadow:var(--shadow);margin-top:6px;font-size:14px}.toast.error{border-color:var(--bad)}[hidden]{display:none!important}
-@media(max-width:780px){main{padding:18px 12px}.topbar-in{padding:12px}.tabs{margin-left:0}.kpis{grid-template-columns:1fr 1fr}.two-cols{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr 1fr}.page-head .actions{width:100%}.page-head .btn{flex:1}.search{min-width:100%;flex-basis:100%}.grid-wrap{max-height:60vh}.form-grid.ids{grid-template-columns:1fr}}@media(max-width:480px){.form-grid{grid-template-columns:1fr}.kpi{padding:12px}.brand{font-size:15px}.dlg-body{padding:14px}}
-.cell-value{display:block;padding:10px;overflow-wrap:anywhere}.session-box{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.session-box .btn{color:#1b2330}.login-wrap{max-width:520px;margin:30px auto;padding:0 15px}.login-wrap .field{margin:14px 0}.auth-error{white-space:pre-wrap;overflow-wrap:anywhere}.session-email{font-size:13px;color:#c6ced8}</style>
-</head>
-<body>
-<header class="topbar"><div class="topbar-in"><div class="brand"><span class="brand-mark"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="m3 7 9-4 9 4-9 4-9-4Zm0 0v10l9 4 9-4V7M12 11v10"/></svg></span><div>Registro único de embalajes<small>Part Number · CQCA · primario y secundario</small></div></div><div class="session-box" id="session-controls" hidden><span class="session-email" id="session-email"></span><button class="btn sm" id="logout">Cerrar sesión</button></div><nav id="app-tabs" hidden class="tabs" aria-label="Secciones"><button id="tab-registro" data-view="registro" aria-current="page">Registro</button><button id="tab-datos" data-view="datos">Datos y respaldo</button></nav></div></header>
-<div class="login-wrap" id="auth-panel"><section class="panel panel-pad" aria-labelledby="login-title"><h1 id="login-title">Ingresar al registro</h1><p class="note" style="margin-top:10px">Usá el correo y la contraseña creados para esta aplicación.</p><form id="login-form"><div class="field"><label for="login-email">Correo</label><input id="login-email" type="email" autocomplete="username" required></div><div class="field"><label for="login-password">Contraseña</label><input id="login-password" type="password" autocomplete="current-password" required></div><button class="btn primary" id="login-submit" type="submit">Iniciar sesión</button><p id="auth-message" class="err auth-error" role="status" aria-live="polite"></p></form><p class="note" style="margin-top:15px">Versión 0.3.0 · La sesión se cierra al recargar esta página.</p></section></div>
-<main id="app-root" hidden>
-<div class="notice" id="stage-notice"><strong>Versión 0.3.0 · Registro compartido.</strong> Actualización cada 10 segundos cuando no hay una ficha abierta. Usá datos de prueba hasta completar la validación.</div>
-<div id="storage-warning" class="notice error" role="status" hidden></div>
-<section id="view-registro" aria-labelledby="title-registro">
-<div class="page-head"><div><h1 id="title-registro">Un registro por pieza</h1><p>Consultá, completá y agregá embalajes. Dimensiones en metros y volumen en m³.</p></div><div class="actions"><button class="btn" id="refresh">Actualizar</button><button class="btn" id="new-record">+ Nuevo registro</button><button class="btn" data-xlsx>Descargar Excel (.xlsx)</button><button class="btn primary" data-download>Descargar registro actualizado (.json)</button></div></div>
-<div class="kpis"><div class="panel kpi"><div class="lbl">REGISTROS</div><div class="val" id="count-all">—</div><div class="sub" id="identified-summary">Part Number o CQCA</div></div><div class="panel kpi"><div class="lbl">CON PART NUMBER CQCA</div><div class="val" id="count-cqca">—</div><div class="sub">Identificador informado</div></div><div class="panel kpi"><div class="lbl">CON CAMPOS VACÍOS</div><div class="val" id="count-empty">—</div><div class="sub">Algún campo sin información</div></div><div class="panel kpi"><div class="lbl">ÚLTIMA CONSULTA</div><div class="val" id="count-changes">—</div><div class="sub" id="last-export">Todavía no descargaste un respaldo</div></div></div>
-<div class="toolbar"><input type="search" id="search" class="search" aria-label="Buscar en el registro" placeholder="Buscar Part Number, CQCA o código de embalaje…"><select id="filter" aria-label="Filtrar registros"><option value="all">Todos los registros</option><option value="empty">Con campos vacíos</option><option value="cqca">Con CQCA</option><option value="no-cqca">Sin CQCA</option></select><select id="page-size" aria-label="Registros por página"><option value="50">50 por página</option><option value="100">100 por página</option><option value="200">200 por página</option></select></div>
-<div class="state-line"><span id="storage-state"><span class="dot"></span>Preparando registro…</span><span class="muted">Hacé clic en Part Number para editar la ficha y guardá sus cambios.</span></div>
-<div class="panel"><div class="grid-wrap" id="grid-wrap"><table class="grid" aria-label="Registro único de embalajes"><thead><tr id="grid-head"></tr></thead><tbody id="grid-body"></tbody></table><div class="empty" id="empty-state" hidden>No hay registros que coincidan con la búsqueda.</div></div><div class="pagination"><span class="note" id="page-info"></span><div class="actions"><button class="btn sm" id="prev-page">Anterior</button><span class="tag" id="page-number"></span><button class="btn sm" id="next-page">Siguiente</button></div></div></div>
-<p class="note" style="margin-top:12px">Los campos sin información quedan vacíos. El código del embalaje puede contener su descripción cuando no se conoce el código.</p>
-</section>
-<section id="view-datos" aria-labelledby="title-datos" hidden>
-<div class="page-head"><div><h1 id="title-datos">Datos y respaldo</h1><p>El archivo JSON contiene solamente los 15 campos del registro.</p></div></div>
-<div class="two-cols"><div class="panel panel-pad data-panel"><h2>Descargar el registro</h2><p>La descarga incluye todos los registros, aunque tengas una búsqueda o un filtro activo. Los números se conservan como números y los campos faltantes como <code>null</code>.</p><div class="actions"><button class="btn primary" data-download>Descargar registro actualizado (.json)</button><button class="btn" data-xlsx>Descargar Excel (.xlsx)</button></div><ul><li>Dimensiones en metros y volumen en m³.</li><li>Part Number, CQCA y códigos conservados como texto.</li><li>Una fila por Part Number; sin Part Number, una fila por CQCA.</li></ul></div><div class="panel panel-pad data-panel"><h2>Registro compartido</h2><p>Los cambios se guardan en Supabase. Las descargas consultan primero la base e incluyen las 15 columnas del registro.</p><ul><li>Consultá y editá desde la ficha de cada pieza.</li><li>Si otra sesión guarda primero, se pedirá cargar la última versión.</li><li>La carga inicial del registro real se realizará en la siguiente etapa.</li></ul><p class="note">Al cerrar sesión se ocultan y se retiran de la memoria de esta página los registros consultados.</p></div></div>
-<div class="panel panel-pad" style="margin-top:16px"><h2>Campos del JSON</h2><p class="note" style="margin-top:8px">El archivo es una lista de objetos. Las claves coinciden con los encabezados del Excel.</p><div class="schema-wrap"><table class="schema-table"><thead><tr><th>Campo / clave del JSON</th><th>Tipo</th></tr></thead><tbody id="schema-body"></tbody></table></div></div>
-</section>
-</main>
-<dialog id="record-dialog" aria-labelledby="form-title"><form id="record-form" novalidate><header class="dlg-head"><h2 id="form-title">Nuevo registro</h2><button class="icon-btn" type="button" id="close-form" aria-label="Cerrar formulario">×</button></header><div class="dlg-body"><div id="form-fields"></div><p class="err" id="form-error" role="alert"></p><div class="notice" id="form-warnings" hidden></div><div class="notice" id="existing-notice" hidden>Este identificador ya está registrado. <button type="button" class="btn sm" id="open-existing">Abrir su ficha</button></div></div><footer class="dlg-foot"><button class="btn ghost" type="button" id="cancel-form">Cancelar</button><button class="btn" id="reload-record" type="button">Cargar última versión</button><button class="btn primary" id="save-form" type="submit">Guardar registro</button></footer></form></dialog>
+:root{
+  --bg:#F8FAFC; --surface:#FFFFFF; --surface-2:#EEF2FF; --border:#E0E7FF; --text:#0F172A; --muted:#64748B;
+  --accent:#6366F1; --accent-hover:#4F46E5; --accent-ink:#FFFFFF;
+  --head:#6366F1; --head-text:#F8FAFC; --head-muted:#EEF2FF;
+  --ok:#10B981; --ok-bg:#F8FAFC; --bad:#EF4444; --bad-bg:#F8FAFC; --warn:#F59E0B; --warn-bg:#F8FAFC;
+  --focus:#6366F1; --shadow:0 1px 2px rgba(15,23,42,.06),0 4px 14px rgba(15,23,42,.06); --radius:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0F172A; --surface:#1E293B; --surface-2:#0F172A; --border:#94A3B8; --text:#F8FAFC; --muted:#94A3B8;
+    --accent:#6366F1; --accent-hover:#4F46E5; --accent-ink:#FFFFFF;
+    --head:#6366F1; --head-text:#F8FAFC; --head-muted:#E0E7FF;
+    --ok:#10B981; --ok-bg:#1E293B; --bad:#EF4444; --bad-bg:#1E293B; --warn:#4F46E5; --warn-bg:#1E293B;
+    --focus:#A5B4FC; --shadow:0 1px 2px rgba(15,23,42,.4);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+h1,h2,h3{margin:0;line-height:1.2}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
+/* Header */
+.topbar{background:var(--head);color:var(--head-text);position:sticky;top:0;z-index:20}
+.topbar-in{max-width:1240px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:.2px}
+.brand-mark{width:30px;height:30px;border-radius:7px;background:var(--accent);display:grid;place-items:center;color:var(--accent-ink)}
+.brand small{display:block;font-weight:500;font-size:12px;color:var(--head-muted)}
+nav.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+nav.tabs button{background:transparent;border:0;color:var(--head-muted);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px}
+nav.tabs button:hover{color:var(--head-text);background:rgba(255,255,255,.07)}
+nav.tabs button[aria-current="page"]{color:var(--accent-ink);background:var(--accent)}
+.draft-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#EF4444;margin-left:6px;vertical-align:middle}
+
+main{max-width:1240px;margin:0 auto;padding:20px 16px 60px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.page-head p{margin:4px 0 0;color:var(--muted)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--border);background:var(--surface);padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px;min-height:38px;text-decoration:none}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover)}
+.btn.danger{color:var(--bad);border-color:currentColor;background:transparent}
+.btn.danger:hover{background:var(--bad-bg)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:5px 10px;min-height:32px;font-size:13px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.icon-btn{border:0;background:transparent;width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:22px;line-height:1;color:var(--muted)}
+.icon-btn:hover{background:var(--surface-2);color:var(--text)}
+
+/* Cards / panels */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.panel-pad{padding:16px}
+.panel h3{font-size:15px;margin-bottom:12px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.kpi{padding:14px 16px}
+.kpi .lbl{font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.kpi .val{font-size:28px;font-weight:750;margin-top:4px;font-variant-numeric:tabular-nums}
+.kpi .sub{font-size:13px;color:var(--muted);margin-top:2px}
+.dash-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.notice{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--radius);background:var(--warn-bg);color:var(--warn);margin-bottom:16px;border:1px solid color-mix(in srgb,var(--warn) 30%,transparent)}
+.notice .btn{margin-left:auto;flex-shrink:0}
+.notice p{margin:0}
+
+/* Tables */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--border);vertical-align:middle}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700;background:var(--surface-2)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.clickable{cursor:pointer}
+tr.clickable:hover td{background:var(--surface-2)}
+
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.badge.ok{background:var(--ok-bg);color:var(--ok)}
+.badge.bad{background:var(--bad-bg);color:var(--bad)}
+.badge.warn{background:var(--warn-bg);color:var(--warn)}
+.badge.neutral{background:var(--surface-2);color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:4px;background:var(--surface-2);border:1px solid var(--border);padding:2px 8px;border-radius:999px;font-size:12.5px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+
+/* Bars */
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar-row .bar-lbl{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:3px}
+.bar-track{height:10px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+.bar-fill{height:100%;background:var(--accent);border-radius:999px}
+
+/* Toolbar */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.toolbar .search{flex:1 1 240px}
+input[type=text],input[type=search],input[type=number],input[type=date],select,textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-height:38px}
+textarea{resize:vertical;min-height:70px}
+input:focus,select:focus,textarea:focus{border-color:var(--focus)}
+.toolbar select{width:auto;min-width:180px}
+
+/* Catalog grid */
+.grid-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.emb-card{display:flex;flex-direction:column;overflow:hidden;cursor:pointer;text-align:left;padding:0;width:100%}
+.emb-card:hover{border-color:var(--accent)}
+.emb-thumb{aspect-ratio:4/3;background:var(--surface-2);display:grid;place-items:center;color:var(--muted);overflow:hidden;position:relative}
+.emb-thumb img{width:100%;height:100%;object-fit:cover}
+.emb-thumb .count{position:absolute;right:8px;bottom:8px;background:rgba(15,23,42,.6);color:#FFFFFF;font-size:12px;padding:2px 7px;border-radius:999px}
+.emb-info{padding:12px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.emb-code{font-weight:750;font-size:16px}
+.emb-desc{color:var(--muted);font-size:13.5px}
+.emb-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:4px;padding-top:8px;border-top:1px solid var(--border)}
+.emb-stats div{font-size:12px;color:var(--muted)}
+.emb-stats b{display:block;font-size:15px;color:var(--text);font-variant-numeric:tabular-nums}
+
+.empty{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty h3{color:var(--text);margin-bottom:6px;font-size:17px}
+.empty p{margin:0 0 16px}
+
+/* Dialogs */
+dialog{border:0;padding:0;border-radius:14px;background:var(--surface);color:var(--text);width:min(760px,calc(100vw - 24px));max-height:calc(100vh - 24px);box-shadow:0 20px 60px rgba(15,23,42,.35)}
+dialog.sm{width:min(480px,calc(100vw - 24px))}
+dialog.lg{width:min(980px,calc(100vw - 24px))}
+dialog::backdrop{background:rgba(15,23,42,.55)}
+dialog form,dialog .dlg-wrap{display:flex;flex-direction:column;max-height:calc(100vh - 24px)}
+.dlg-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border)}
+.dlg-head h2{font-size:18px}
+.dlg-body{padding:16px 18px;overflow-y:auto}
+.dlg-foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid var(--border);flex-wrap:wrap}
+.dlg-foot .left{margin-right:auto}
+fieldset{border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px 4px;margin:0 0 14px}
+legend{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);padding:0 6px}
+.field{margin-bottom:12px}
+.field label{display:block;font-weight:600;font-size:13.5px;margin-bottom:4px}
+.field .hint{font-size:12.5px;color:var(--muted);margin:4px 0 0}
+.err{color:var(--bad);font-size:12.5px;margin:4px 0 0;min-height:0}
+.err:empty{display:none}
+.invalid{border-color:var(--bad)!important}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:0 12px}
+
+/* chip input */
+.chip-input{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border:1px solid var(--border);border-radius:8px;padding:6px 8px;background:var(--surface);min-height:42px}
+.chip-input:focus-within{border-color:var(--focus);outline:2px solid color-mix(in srgb,var(--focus) 35%,transparent)}
+.chip-input input{border:0!important;outline:0!important;flex:1;min-width:140px;padding:4px;min-height:28px;background:transparent}
+.chip-input .chip button{border:0;background:transparent;cursor:pointer;padding:0 0 0 2px;font-size:15px;line-height:1;color:var(--muted)}
+.chip-input .chip button:hover{color:var(--bad)}
+
+/* image slots */
+.img-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px}
+.slot{position:relative;border:2px dashed var(--border);border-radius:10px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--muted);font-size:12.5px;cursor:pointer;overflow:hidden;background:var(--surface-2);text-align:center;padding:6px}
+.slot:hover,.slot:focus-within{border-color:var(--accent)}
+.slot input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.slot.has{border-style:solid;padding:0}
+.slot img{width:100%;height:100%;object-fit:cover}
+.slot .slot-name{position:absolute;left:6px;bottom:6px;background:rgba(15,23,42,.62);color:#FFFFFF;padding:1px 7px;border-radius:999px;font-size:11.5px}
+.slot .rm{position:absolute;top:5px;right:5px;z-index:2;width:28px;height:28px;border-radius:50%;border:0;background:rgba(15,23,42,.65);color:#FFFFFF;cursor:pointer;font-size:16px;line-height:1}
+.slot .plus{font-size:26px;line-height:1}
+
+/* detail */
+.det-top{display:grid;grid-template-columns:1.1fr 1fr;gap:18px}
+.gallery-main{aspect-ratio:4/3;background:var(--surface-2);border-radius:10px;overflow:hidden;display:grid;place-items:center;color:var(--muted)}
+.gallery-main img{width:100%;height:100%;object-fit:contain;cursor:zoom-in}
+.gallery-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.gallery-thumbs button{padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;aspect-ratio:1;background:var(--surface-2);cursor:pointer;color:var(--muted);font-size:11px}
+.gallery-thumbs button[aria-pressed="true"]{border-color:var(--accent)}
+.gallery-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+dl.specs{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
+dl.specs dt{color:var(--muted);font-size:13.5px}
+dl.specs dd{margin:0;font-weight:600}
+.section-title{font-size:14px;margin:18px 0 8px}
+
+/* inventory */
+.inv-head{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;padding:14px 16px;margin-bottom:14px}
+.inv-meta{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px}
+.inv-meta span{color:var(--muted)}
+.progress{flex:1 1 220px;max-width:360px}
+.progress .bar-track{height:12px}
+.progress small{color:var(--muted)}
+.inv-list{display:flex;flex-direction:column;gap:10px}
+.inv-cols,.inv-item{display:grid;grid-template-columns:minmax(190px,1.1fr) 84px minmax(260px,2.6fr) minmax(330px,1.5fr);gap:14px;align-items:center}
+.inv-cols{padding:0 14px 6px;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700}
+.inv-cols .r{text-align:right}
+.inv-cols .sub3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:right}
+.inv-item{padding:12px 14px}
+.inv-emb{display:flex;gap:10px;align-items:center;min-width:0}
+.cell{display:flex;flex-direction:column;align-items:flex-end;text-align:right;gap:2px}
+.cell .lbl{font-size:11.5px;color:var(--muted);font-weight:600}
+.cell .big{font-size:20px;font-weight:750;font-variant-numeric:tabular-nums}
+.cell small{font-size:11.5px;color:var(--muted)}
+.inv-item .inv-stock .lbl,.inv-res3 .lbl{display:none}
+.inv-res3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.loc-rep input{border-style:dashed;background:var(--surface-2)}
+.tbl-sit tfoot th,table tfoot th{background:var(--surface-2);color:var(--text);font-size:13.5px;text-transform:none;letter-spacing:0}
+.inv-item.done{border-left:4px solid var(--ok)}
+.inv-thumb{width:64px;height:64px;border-radius:8px;background:var(--surface-2);overflow:hidden;display:grid;place-items:center;color:var(--muted);font-size:11px}
+.inv-thumb img{width:100%;height:100%;object-fit:cover}
+.inv-locs{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.inv-locs label{font-size:12px;color:var(--muted);font-weight:600;display:block;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inv-locs input{min-height:36px;padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums}
+.inv-res{text-align:right;min-width:130px}
+.inv-res .tot{font-size:22px;font-weight:750;font-variant-numeric:tabular-nums}
+.inv-res .flujo{font-size:12.5px;color:var(--muted)}
+.inv-actions{display:flex;gap:8px;flex-wrap:wrap}
+.sticky-foot{position:sticky;bottom:0;background:var(--bg);padding:12px 0;margin-top:12px;display:flex;justify-content:flex-end;gap:8px;border-top:1px solid var(--border)}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--border);border-radius:8px;cursor:pointer}
+.check input{width:18px;height:18px;margin-top:2px;flex-shrink:0}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.summary .panel{padding:10px 12px;box-shadow:none}
+
+/* grilla */
+.grid-wrap{overflow:auto;max-height:calc(100vh - 250px);min-height:300px}
+.grid-edit{font-size:13.5px;border-collapse:separate;border-spacing:0}
+.grid-edit thead th{position:sticky;top:0;z-index:2;white-space:nowrap}
+.grid-edit th,.grid-edit td{padding:0;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.grid-edit thead th,.grid-edit tbody th{padding:8px 10px}
+.grid-edit td:nth-last-child(-n+2){padding:4px 8px;white-space:nowrap}
+.grid-edit .sticky-col{position:sticky;left:0;z-index:1;background:var(--surface);min-width:90px}
+.grid-edit thead .sticky-col{z-index:3;background:var(--surface-2)}
+.grid-edit td input{border:0;border-radius:0;background:transparent;min-height:36px;padding:6px 8px;width:100%}
+.grid-edit td input.r{text-align:right;font-variant-numeric:tabular-nums}
+.grid-edit td input:focus{outline:2px solid var(--focus);outline-offset:-2px;background:var(--surface)}
+.grid-edit td input.invalid{background:var(--bad-bg);outline:2px solid var(--bad);outline-offset:-2px}
+.grid-edit td input.saved{background:var(--ok-bg);transition:background .2s}
+.grid-edit tbody tr:hover td,.grid-edit tbody tr:hover th{background:color-mix(in srgb,var(--surface-2) 60%,transparent)}
+.link{border:0;background:none;padding:0;font-weight:750;color:var(--text);cursor:pointer;text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
+.link:hover{text-decoration-color:var(--accent)}
+
+/* lightbox */
+#dlgImg{width:auto;max-width:calc(100vw - 24px);background:#0F172A}
+#dlgImg img{display:block;max-width:calc(100vw - 24px);max-height:calc(100vh - 80px)}
+#dlgImg .dlg-head{background:#0F172A;color:#F8FAFC;border-color:#1E293B}
+
+/* toast */
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast{background:var(--head);color:var(--head-text);padding:10px 16px;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.25);font-weight:600;font-size:14px;border-left:4px solid var(--ok)}
+.toast.error{border-left-color:#EF4444}
+
+@media (max-width:900px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dash-grid{grid-template-columns:1fr}
+  .det-top{grid-template-columns:1fr}
+  .inv-cols{display:none}
+  .inv-item{grid-template-columns:1fr auto}
+  .inv-item .inv-locs,.inv-item .inv-res3{grid-column:1/-1}
+  .inv-item .inv-stock .lbl,.inv-res3 .lbl{display:block}
+  .inv-res3{padding-top:8px;border-top:1px solid var(--border)}
+  .inv-thumb{width:56px;height:56px}
+}
+@media (max-width:600px){
+  .topbar-in{gap:8px}
+  nav.tabs{margin-left:0;width:100%}
+  nav.tabs{gap:2px}
+  nav.tabs button{flex:1 1 auto;padding:7px 4px;font-size:12px;white-space:nowrap}
+  .draft-dot{margin-left:3px}
+  .grid2,.grid4{grid-template-columns:1fr 1fr}
+  .img-slots{grid-template-columns:repeat(2,1fr)}
+  .kpi .val{font-size:23px}
+  .summary{grid-template-columns:1fr 1fr}
+  .toolbar select{width:100%}
+}
+/* Una sola página, con datos independientes para cada planta. */
+[hidden]{display:none!important}
+.integration-notice{max-width:1320px;margin:16px auto 0;padding:12px 20px;background:#F8FAFC;border:1px solid #22D3EE;border-radius:10px;color:#0F172A;font-size:13px;line-height:1.5}
+.online-login{max-width:540px;margin:60px auto;padding:0 16px}.online-login h1{font-size:24px}.online-login input{display:block;width:100%;min-height:42px;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font:inherit;background:var(--surface);color:var(--text)}.online-error{background:#F8FAFC;color:#EF4444;border-color:#EF4444}#onlineEmail{font-size:12px;color:#F8FAFC;max-width:240px;overflow-wrap:anywhere}.integration-notice strong{display:block}
+#cordobaPanel{max-width:1500px;margin:0 auto;padding:0 24px}
+.cordoba-heading{padding:0 4px 14px}
+.cordoba-heading h1{font-size:22px;margin:0 0 8px}
+.cordoba-heading p{margin:0 0 8px;color:var(--muted)}
+
+nav.tabs{flex-wrap:wrap}
+@media(max-width:600px){.integration-notice{margin:12px}.cordoba-heading h1{font-size:20px}#cordobaPanel{max-width:1500px;margin:0 auto;padding:0 24px}}
+</style>
+<style>
+/* TMS Inbound · Logitex · Aura Indigo. Colores semánticos compartidos. */
+:root,:host{--warn:#F59E0B;--info:#22D3EE;--neutral:#94A3B8}
+h1,h2,h3{color:#6366F1}
+.btn{color:#6366F1}
+.btn.primary{color:#FFFFFF}
+.kpi{background:var(--surface);border:1px solid #E0E7FF}
+.kpi .val{color:#6366F1}
+.chip,.tag{background:#EEF2FF;color:#4338CA;border-color:#E0E7FF}
+.notice{background:var(--surface);color:var(--text);border:1px solid #F59E0B;border-left-width:4px}
+.err,.notice.error{color:var(--text);border-left:4px solid #EF4444;padding-left:10px}
+.err:empty{border:0;padding:0}
+.notice.error{background:var(--surface);border-color:#EF4444}
+.toast{background:var(--surface);color:var(--text);border-left-color:#10B981}
+.toast.error{border-left-color:#EF4444}
+
+.topbar{background:linear-gradient(110deg,#6366F1,#4F46E5)}
+.brand-mark{background:#EEF2FF;color:#6366F1}
+.brand small,nav.tabs button{color:#FFFFFF}
+nav.tabs button[aria-current="page"]{background:#FFFFFF;color:#4338CA}
+nav.tabs button:hover{background:rgba(255,255,255,.14);color:#FFFFFF}
+nav.tabs button[aria-current="page"]:hover{background:#EEF2FF;color:#4338CA}
+.badge.ok,.badge.bad,.badge.warn{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.badge.ok::before,.badge.bad::before,.badge.warn::before{content:"";width:7px;height:7px;border-radius:50%;flex:none}
+.badge.ok::before{background:#10B981}.badge.bad::before{background:#EF4444}.badge.warn::before{background:#F59E0B}
+.badge.neutral{background:var(--surface-2);color:var(--muted);border:1px solid #94A3B8}
+.integration-notice{background:var(--surface);color:var(--text);border-color:#22D3EE;border-left-width:4px}
+.integration-notice.online-error{background:var(--surface);color:var(--text);border-color:#EF4444}
+.btn.danger{color:var(--text);border-color:#EF4444}
+th,td{border-bottom-color:rgba(148,163,184,0.14)}
+.draft-dot{background:#22D3EE}
+#dlgImg .dlg-head h2{color:#F8FAFC}
+</style>
+<style>
+/* Excepción autorizada: fondos originales de las imágenes corporativas. */
+.corporate-banner{display:grid;grid-template-columns:1fr 1fr;background:#243783}
+.corporate-logo{display:flex;align-items:center;justify-content:center;min-height:100px;padding:10px 18px}
+.corporate-logo.stellantis{background:transparent}
+.corporate-logo.logitex{background:transparent}
+.corporate-logo.stellantis img{display:block;width:min(260px,60vw);max-width:60%;height:80px;object-fit:cover;object-position:center}
+.corporate-logo.logitex img{display:block;width:200px;max-width:60%;height:auto}
+.topbar{background:#243783}
+@media(max-width:480px){.corporate-logo{min-height:76px;padding:8px 12px}.corporate-logo.stellantis img{width:180px;height:60px}.corporate-logo.logitex img{width:140px}}
+</style>
+<style>.corporate-logo.logitex img{filter:url(#logitex-navy)}</style></head>
+<body><svg xmlns="http://www.w3.org/2000/svg" width="1" height="1" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><filter id="logitex-navy" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="0.916317991632" intercept="0.083682008368"/><feFuncG type="linear" slope="1.156069364162" intercept="-0.156069364162"/><feFuncB type="linear" slope="1.227722772277" intercept="-0.227722772277"/></feComponentTransfer></filter></defs></svg>
+
+<div class="corporate-banner" aria-label="Stellantis y Logitex">
+ <div class="corporate-logo stellantis"><img src="./assets/stellantis.jpg" alt="Stellantis" width="694" height="440"></div>
+ <div class="corporate-logo logitex"><img src="./assets/logitex.png" alt="Logitex" width="200" height="53"></div>
+</div>
+
+<a class="sr-only" href="#main">Saltar al contenido</a>
+<section id="loginPalomar" class="online-login" aria-labelledby="onlineLoginTitle">
+<div class="panel panel-pad"><h1 id="onlineLoginTitle">Gestión de Embalajes</h1><p>Palomar y Córdoba · Ingresá con tu cuenta de la aplicación.</p>
+<form id="pLoginForm"><div class="field"><label for="pEmail">Correo</label><input id="pEmail" type="email" autocomplete="username" required></div><div class="field"><label for="pPassword">Contraseña</label><input id="pPassword" type="password" autocomplete="current-password" required></div><button id="onlineLoginSubmit" class="btn primary" type="submit">Iniciar sesión</button><p id="pLoginMessage" role="status"></p></form><p class="hint">Paso 2 · Catálogo Palomar compartido. La sesión se cierra al recargar.</p></div></section>
+<div id="palomarApp" hidden><header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
+      </div>
+      <div>Gestión de Embalajes<small id="appSubtitle">Palomar · Catálogo e inventario de racks</small></div>
+    </div>
+    <nav class="tabs" aria-label="Secciones">
+      <button data-view="tablero">Tablero</button>
+      <button data-view="embalajes">Embalajes</button>
+      <button data-view="grilla">Grilla</button>
+      <button data-view="inventario">Inventario · próximo paso</button>
+      <button data-view="historial">Historial · próximo paso</button>
+      <button data-action="datos" id="datosPalomar">Datos Palomar</button>
+      <button id="datosCordoba" hidden>Datos y respaldo Córdoba</button><button id="onlineRefresh">Actualizar Palomar</button><span id="onlineEmail"></span><button id="onlineLogout">Cerrar sesión</button>
+      <button data-view="cordoba">Córdoba · Registro PN</button>
+    </nav>
+  </div>
+</header>
+
+<aside id="onlineNotice" class="integration-notice" role="status">Palomar conectado.</aside>
+<main id="main" tabindex="-1"></main>
+<section id="cordobaPanel" aria-label="Córdoba · Registro de piezas" hidden><div id="cordobaContent"></div></section></div>
 <div id="toast" role="status" aria-live="polite"></div>
 
+<datalist id="dl_tipos">
+  <option value="POLIVALENTE"><option value="ESPECIFICO"><option value="PEUBOX"><option value="Rack metálico"><option value="Caja plástica"><option value="Bin plástico"><option value="Pallet"><option value="Caja de cartón"><option value="Contenedor plegable">
+</datalist>
+<datalist id="dl_prov"></datalist>
+
+<!-- Formulario de embalaje -->
+<dialog id="dlgForm" aria-labelledby="formTitle">
+  <form id="formEmb" novalidate>
+    <header class="dlg-head"><h2 id="formTitle">Nuevo embalaje</h2><button type="button" class="icon-btn" data-close aria-label="Cerrar">×</button></header>
+    <div class="dlg-body">
+      <fieldset><legend>Identificación</legend>
+        <div class="grid2">
+          <div class="field"><label for="f_codigo">Código / modelo *</label><input type="text" id="f_codigo" maxlength="40" autocomplete="off"><p class="err" id="e_codigo"></p></div>
+          <div class="field"><label for="f_tipo">Tipo</label><input type="text" id="f_tipo" list="dl_tipos" maxlength="40" placeholder="Rack metálico, caja…"></div>
+        </div>
+        <div class="field"><label for="f_desc">Descripción</label><input type="text" id="f_desc" maxlength="120" placeholder="Ej.: Rack para paragolpes delantero"><p class="err" id="e_descripcion"></p></div>
+      </fieldset>
+      <fieldset><legend>Medidas y capacidad</legend>
+        <div class="grid4">
+          <div class="field"><label for="f_largo">Largo (mm)</label><input type="number" id="f_largo" min="1" step="any" inputmode="decimal"><p class="err" id="e_largo"></p></div>
+          <div class="field"><label for="f_ancho">Ancho (mm)</label><input type="number" id="f_ancho" min="1" step="any" inputmode="decimal"><p class="err" id="e_ancho"></p></div>
+          <div class="field"><label for="f_alto">Alto (mm)</label><input type="number" id="f_alto" min="1" step="any" inputmode="decimal"><p class="err" id="e_alto"></p></div>
+          <div class="field"><label for="f_peso">Peso vacío (kg)</label><input type="number" id="f_peso" min="0" step="any" inputmode="decimal"><p class="err" id="e_peso"></p></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label for="f_qme">QME (piezas por embalaje)</label><input type="number" id="f_qme" min="1" step="1" inputmode="numeric"><p class="err" id="e_qme"></p></div>
+          <div class="field"><label for="f_flujo">Stock inicial de racks</label><input type="number" id="f_flujo" min="0" step="1" inputmode="numeric"><p class="hint">Valor fijo de referencia: los inventarios no lo modifican.</p><p class="err" id="e_flujo"></p></div>
+        </div>
+      </fieldset>
+      <fieldset><legend>Proveedores donde se usa</legend>
+        <div class="field">
+          <label for="f_prov">Agregar proveedor</label>
+          <div class="chip-input" id="provBox"><input type="text" id="f_prov" list="dl_prov" placeholder="Escribí y presioná Enter" autocomplete="off"></div>
+          <p class="hint">Cada proveedor aparece como una ubicación al hacer el inventario.</p>
+        </div>
+      </fieldset>
+      <p class="hint">Las fotos compartidas se habilitarán en el próximo paso.</p>
+      <div class="field"><label for="f_obs">Observaciones / números de pieza</label><textarea id="f_obs" maxlength="1000"></textarea></div>
+    </div>
+    <p id="formError" class="online-form-error" role="alert" style="padding:0 20px;color:#EF4444;white-space:pre-wrap"></p><footer class="dlg-foot">
+      <button type="button" class="btn ghost" data-close>Cancelar</button>
+      <button type="button" class="btn" id="reloadPalomar">Consultar última versión</button><button type="submit" class="btn primary" id="btnGuardar">Guardar embalaje</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- Detalle -->
+<dialog id="dlgDet" class="lg" aria-labelledby="detTitle"><div class="dlg-wrap" id="detWrap"></div></dialog>
+
+<!-- Confirmación genérica -->
+<dialog id="dlgConfirm" class="sm" aria-labelledby="cfTitle">
+  <div class="dlg-wrap">
+    <header class="dlg-head"><h2 id="cfTitle">Confirmar</h2></header>
+    <div class="dlg-body" id="cfBody"></div>
+    <footer class="dlg-foot"><button type="button" class="btn ghost" id="cfNo">Cancelar</button><button type="button" class="btn primary" id="cfYes">Confirmar</button></footer>
+  </div>
+</dialog>
+
+<!-- Cierre de inventario -->
+<dialog id="dlgCierre" aria-labelledby="ciTitle"><div class="dlg-wrap" id="ciWrap"></div></dialog>
+
+<!-- Detalle de inventario -->
+<dialog id="dlgInv" class="lg" aria-labelledby="ivTitle"><div class="dlg-wrap" id="ivWrap"></div></dialog>
+
+<!-- Datos -->
+<dialog id="dlgDatos" class="sm" aria-labelledby="dtTitle">
+  <div class="dlg-wrap">
+    <header class="dlg-head"><h2 id="dtTitle">Datos y respaldo</h2><button type="button" class="icon-btn" data-close aria-label="Cerrar">×</button></header>
+    <div class="dlg-body">
+      <p style="margin-top:0;color:var(--muted)">El catálogo Palomar se guarda en Supabase y se comparte con los usuarios autorizados. Córdoba mantiene sus datos separados.</p>
+      <p id="dtUltimo" style="font-size:13.5px"></p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn primary" data-action="exportar">Descargar catálogo Palomar (.json)</button>
+
+        <button class="btn" data-action="csv-catalogo">Exportar catálogo a Excel (.csv)</button>
+
+      </div>
+      <input type="file" id="fileImport" accept=".json,application/json" hidden>
+    </div>
+  </div>
+</dialog>
+
+<!-- Imagen ampliada -->
+<dialog id="dlgImg" aria-labelledby="imgTitle"><div class="dlg-wrap"><header class="dlg-head"><h2 id="imgTitle" style="font-size:15px"></h2><button type="button" class="icon-btn" data-close aria-label="Cerrar" style="color:#F8FAFC">×</button></header><img id="imgBig" alt=""></div></dialog>
+
+<script src="./cordoba-registro.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js"></script>
 <script>
-
-// CORE_START
-
-const FIELDS = [{"key":"Part Number","label":"Part Number","type":"text","group":"identidad"},{"key":"Part number CQCA","label":"Part number CQCA","type":"text","group":"identidad"},{"key":"Tipo medio secundario","label":"Código / tipo de medio secundario","type":"text","group":"secundario"},{"key":"Largo embalaje secundario (m)","label":"Largo secundario (m)","type":"number","group":"secundario"},{"key":"Ancho embalaje secundario (m)","label":"Ancho secundario (m)","type":"number","group":"secundario"},{"key":"Alto embalaje secundario (m)","label":"Alto secundario (m)","type":"number","group":"secundario"},{"key":"Cantidad de embalajes primarios por secundario","label":"Primarios por secundario","type":"number","group":"secundario"},{"key":"Cantidad de piezas por embalaje secundario","label":"Piezas por secundario","type":"number","group":"secundario"},{"key":"M3 embalaje secundario","label":"M3 secundario","type":"number","group":"secundario"},{"key":"Tipo medio primario","label":"Código / tipo de medio primario","type":"text","group":"primario"},{"key":"Largo embalaje primario (m)","label":"Largo primario (m)","type":"number","group":"primario"},{"key":"Ancho embalaje primario (m)","label":"Ancho primario (m)","type":"number","group":"primario"},{"key":"Alto embalaje primario (m)","label":"Alto primario (m)","type":"number","group":"primario"},{"key":"QME / piezas por embalaje primario","label":"Piezas por primario (QME)","type":"number","group":"primario"},{"key":"M3 embalaje primario","label":"M3 primario","type":"number","group":"primario"}];
-const PN=FIELDS[0].key, CQCA=FIELDS[1].key;
-const BASE_TAG='prueba-etapa1-20261015';
-const recordKey=r=>r[PN]!==null?'pn:'+r[PN]:'cqca:'+r[CQCA];
-const KEYS=FIELDS.map(f=>f.key);
-const NUMBERS=FIELDS.filter(f=>f.type==='number');
-const isEmpty=v=>v===null||v===undefined||v==='';
-function parseNumber(value,label){
- if(isEmpty(value))return null;
- if(typeof value==='string'){
-  const s=value.trim();if(s==='')return null;
-  if(!/^[+-]?(?:\d+(?:[.,]\d*)?|[.,]\d+)(?:e[+-]?\d+)?$/i.test(s))throw new Error(`${label}: ingresá un número válido, sin separadores de miles.`);
-  value=Number(s.replace(',','.'));
- }
- if(typeof value!=='number'||!Number.isFinite(value)||value<0)throw new Error(`${label}: el valor debe ser un número positivo o quedar vacío.`);
- return value===0?null:value;
-}
-function normaliseRecord(input,{strict=false}={}){
- if(!input||typeof input!=='object'||Array.isArray(input))throw new Error('Cada registro debe ser un objeto JSON.');
- if(strict){const keys=Object.keys(input);const extras=keys.filter(k=>!KEYS.includes(k));const missing=KEYS.filter(k=>!Object.hasOwn(input,k));if(extras.length||missing.length)throw new Error(`Las columnas no coinciden con el registro.${missing.length?' Faltan: '+missing.join('; ')+'.':''}${extras.length?' Sobran: '+extras.join('; ')+'.':''}`);}
- const result={};
- for(const f of FIELDS){let v=input[f.key];if(f.type==='number'){if(strict&&v!==null&&typeof v!=='number')throw new Error(`${f.label}: el JSON debe contener un número o null.`);result[f.key]=parseNumber(v,f.label);}else{
-  if(v===null||v===undefined)v=null;else{if(typeof v!=='string')throw new Error(`${f.label}: el identificador debe estar escrito como texto.`);v=v.trim();if(!v||v==='0'||v==='0.0')v=null;}result[f.key]=v;
- }}
- if(!result[PN]&&!result[CQCA])throw new Error('Completá Part Number o Part number CQCA para identificar la pieza.');return result;
-}
-function checkedProduct(a,b,c){const n=c===undefined?a*b:a*b*c;if(!Number.isFinite(n)||n<=0)throw new Error('El resultado del cálculo excede el rango numérico permitido.');return Number(n.toPrecision(15));}
-function derive(input){const record={...input},calculated=[];for(const [v,d] of [[8,[3,4,5]],[14,[10,11,12]]])if(isEmpty(record[FIELDS[v].key])&&d.every(i=>!isEmpty(record[FIELDS[i].key]))){record[FIELDS[v].key]=checkedProduct(...d.map(i=>record[FIELDS[i].key]));calculated.push(FIELDS[v].label);}
- if(isEmpty(record[FIELDS[7].key])&&!isEmpty(record[FIELDS[6].key])&&!isEmpty(record[FIELDS[13].key])){record[FIELDS[7].key]=checkedProduct(record[FIELDS[6].key],record[FIELDS[13].key]);calculated.push(FIELDS[7].label);}return {record,calculated};}
-function validateRecords(input){if(!Array.isArray(input))throw new Error('El JSON debe ser una lista de registros, sin envoltorios ni otras tablas.');const seen=new Set();return input.map((r,i)=>{let n;try{n=normaliseRecord(r,{strict:true});}catch(e){throw new Error(`Registro ${i+1}: ${e.message}`);}const key=recordKey(n);if(seen.has(key))throw new Error(`${n[PN]?'Part Number':'CQCA sin Part Number'} repetido: ${n[PN]??n[CQCA]}. No se reemplazó ningún dato.`);seen.add(key);return n;});}
-function warnings(r){const messages=[];for(const [v,d,name] of [[8,[3,4,5],'secundario'],[14,[10,11,12],'primario']])if(!isEmpty(r[FIELDS[v].key])&&d.every(i=>!isEmpty(r[FIELDS[i].key]))){const p=d.reduce((n,i)=>n*r[FIELDS[i].key],1);if(Math.abs(r[FIELDS[v].key]-p)>Math.max(1e-6,Math.abs(p)*.02))messages.push(`El M3 ${name} informado difiere del producto de sus dimensiones. Podés conservarlo o calcularlo nuevamente.`);}
- const count=r[FIELDS[6].key],pieces=r[FIELDS[7].key],qme=r[FIELDS[13].key];if(count!==null&&!Number.isInteger(count))messages.push('La cantidad de primarios por secundario no es entera; se conservará sin redondear.');if([count,pieces,qme].every(x=>x!==null)&&Math.abs(count*qme-pieces)>Math.max(1e-6,pieces*1e-6))messages.push('Las cantidades informadas no coinciden: primarios por secundario × piezas por primario difiere de piezas por secundario. Se conservan los valores informados.');return messages;}
-function missing(r){return FIELDS.some(f=>isEmpty(r[f.key]));}
-function upsert(records,record,editingKey=null){const key=recordKey(record),found=records.findIndex(r=>recordKey(r)===key),old=editingKey===null?-1:records.findIndex(r=>recordKey(r)===editingKey);if(editingKey!==null&&old<0)throw new Error('El registro que estás editando ya no existe.');if(old>=0&&records[old][PN]!==null&&records[old][PN]!==record[PN])throw new Error('El Part Number de una ficha existente no se puede cambiar.');if(found>=0&&found!==old)throw new Error('Ese identificador ya existe. Abrí su ficha para editarlo.');const next=records.slice();if(old>=0)next[old]=record;else next.push(record);return next;}
-function makeSnapshot(records,revision,exportedRevision,updatedAt,lastExportAt){return {schemaVersion:1,baseTag:BASE_TAG,revision,exportedRevision,updatedAt,lastExportAt,rows:records.map(r=>FIELDS.map(f=>r[f.key]))};}
-function fromSnapshot(s){if(!s||s.schemaVersion!==1||!Array.isArray(s.rows))throw new Error('Formato de guardado desconocido.');return validateRecords(s.rows.map(row=>{if(!Array.isArray(row)||row.length!==FIELDS.length)throw new Error('La copia guardada tiene columnas incompletas.');return Object.fromEntries(FIELDS.map((f,i)=>[f.key,row[i]]));}));}
-const xmlEscape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
-function zipFiles(files){const enc=new TextEncoder(),table=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1;table[n]=c>>>0;}
- const crc32=b=>{let c=0xffffffff;for(let i=0;i<b.length;i++)c=table[(c^b[i])&255]^(c>>>8);return (c^0xffffffff)>>>0;};
- const entries=files.map(([path,text])=>{const name=enc.encode(path),data=enc.encode(text);return {name,data,crc:crc32(data),offset:0};});
- const size=entries.reduce((n,e)=>n+30+e.name.length+e.data.length+46+e.name.length,22),out=new Uint8Array(size),view=new DataView(out.buffer);let p=0;
- const u16=v=>{view.setUint16(p,v,true);p+=2;},u32=v=>{view.setUint32(p,v,true);p+=4;},bytes=b=>{out.set(b,p);p+=b.length;};
- for(const e of entries){e.offset=p;u32(0x04034b50);u16(20);u16(0x0800);u16(0);u16(0);u16(33);u32(e.crc);u32(e.data.length);u32(e.data.length);u16(e.name.length);u16(0);bytes(e.name);bytes(e.data);}
- const centralStart=p;
- for(const e of entries){u32(0x02014b50);u16(20);u16(20);u16(0x0800);u16(0);u16(0);u16(33);u32(e.crc);u32(e.data.length);u32(e.data.length);u16(e.name.length);u16(0);u16(0);u16(0);u16(0);u32(0);u32(e.offset);bytes(e.name);}
- const centralSize=p-centralStart;u32(0x06054b50);u16(0);u16(0);u16(entries.length);u16(entries.length);u32(centralSize);u32(centralStart);u16(0);return out;
-}
-function makeXlsxBytes(input){const rows=validateRecords(input);if(rows.length>1048575)throw new Error('El registro excede las filas disponibles en una hoja de Excel.');
- const ns='http://schemas.openxmlformats.org/spreadsheetml/2006/main',rel='http://schemas.openxmlformats.org/officeDocument/2006/relationships',decl='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
- const cell=(v,address,style)=>{if(v===null)return '';if(typeof v==='number')return `<c r="${address}" s="${style}" t="n"><v>${v}</v></c>`;if(v.length>32767)throw new Error(`El texto de la celda ${address} excede el límite de Excel.`);if(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(v))throw new Error(`La celda ${address} contiene caracteres no admitidos por Excel.`);return `<c r="${address}" s="${style}" t="inlineStr"><is><t xml:space="preserve">${xmlEscape(v)}</t></is></c>`;};
- const cols=FIELDS.map((f,i)=>`<col min="${i+1}" max="${i+1}" width="${i===0?19:i===1?29:i===6||i===7?29:24}" customWidth="1"/>`).join('');
- const sheetRows=[`<row r="1" ht="65" customHeight="1">${FIELDS.map((f,i)=>cell(f.key,String.fromCharCode(65+i)+'1',1)).join('')}</row>`];
- rows.forEach((r,j)=>{const n=j+2;sheetRows.push(`<row r="${n}" ht="22" customHeight="1">${FIELDS.map((f,i)=>cell(r[f.key],String.fromCharCode(65+i)+n,[8,14].includes(i)?3:[3,4,5,10,11,12].includes(i)?2:0)).join('')}</row>`);});
- const styles=decl+`<styleSheet xmlns="${ns}"><numFmts count="2"><numFmt numFmtId="164" formatCode="0.000###"/><numFmt numFmtId="165" formatCode="0.000000###"/></numFmts><fonts count="2"><font><sz val="10"/><name val="Arial"/><color rgb="FF263444"/></font><font><b/><sz val="10"/><name val="Arial"/><color rgb="FFFFFFFF"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF243D56"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="4"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment vertical="center"/></xf><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
- const last=rows.length+1,sheet=decl+`<worksheet xmlns="${ns}"><sheetPr><tabColor rgb="FF243D56"/></sheetPr><dimension ref="A1:O${last}"/><sheetViews><sheetView workbookViewId="0" showGridLines="0"><pane xSplit="2" ySplit="1" topLeftCell="C2" activePane="bottomRight" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="22"/><cols>${cols}</cols><sheetData>${sheetRows.join('')}</sheetData><autoFilter ref="A1:O${last}"/></worksheet>`;
- const types=decl+`<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`;
- return zipFiles([['[Content_Types].xml',types],['_rels/.rels',decl+`<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="${rel}/officeDocument" Target="xl/workbook.xml"/></Relationships>`],['xl/workbook.xml',decl+`<workbook xmlns="${ns}" xmlns:r="${rel}"><sheets><sheet name="Registro" sheetId="1" r:id="rId1"/></sheets></workbook>`],['xl/_rels/workbook.xml.rels',decl+`<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="${rel}/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="${rel}/styles" Target="styles.xml"/></Relationships>`],['xl/styles.xml',styles],['xl/worksheets/sheet1.xml',sheet]]);
-}
-globalThis.RegistroCore={FIELDS,recordKey,parseNumber,normaliseRecord,derive,validateRecords,warnings,missing,upsert,makeSnapshot,fromSnapshot,makeXlsxBytes};
-
-// CORE_END
 'use strict';
-const DB_FIELDS = ['part_number','part_number_cqca','tipo_medio_secundario','largo_secundario','ancho_secundario','alto_secundario','primarios_por_secundario','piezas_por_secundario','m3_secundario','tipo_medio_primario','largo_primario','ancho_primario','alto_primario','piezas_por_primario','m3_primario'];
-const DB_SELECT = ['id','version','updated_at',...DB_FIELDS].join(',');
-class ConflictError extends Error {
- constructor(){super('La ficha cambió desde que la abriste o ya no está disponible para tu usuario. No se sobrescribió. Copiá lo que necesites y usá “Cargar última versión” para continuar.');this.name='ConflictError';}
+const PALOMAR_TABLE = 'palomar_catalogo';
+const PALOMAR_SELECT = 'id,codigo,tipo,descripcion,largo_m,ancho_m,alto_m,peso_kg,qme,stock_inicial,proveedores,observaciones,version,created_at,updated_at';
+class PalomarConflict extends Error {
+  constructor(){super('Otra persona modificó esta ficha. Se conservaron tus valores en pantalla. Usá «Consultar última versión» antes de volver a guardar.');this.name='PalomarConflict';}
 }
-class UncertainWriteError extends Error {
- constructor(){super('No se pudo confirmar el guardado. No vuelvas a enviarlo todavía: usá “Cargar última versión” para comprobar qué quedó en la base.');this.name='UncertainWriteError';}
+class PalomarUncertain extends Error {
+  constructor(){super('No se pudo confirmar el guardado. Se conservaron tus valores. Usá «Consultar última versión» para comprobar qué quedó en la base antes de reintentar.');this.name='PalomarUncertain';}
 }
-function toDatabase(record){const valid=normaliseRecord(record);return Object.fromEntries(DB_FIELDS.map((name,i)=>[name,valid[FIELDS[i].key]]));}
-function decodeDatabase(row){
- if(!row||typeof row.id!=='string'||!Number.isSafeInteger(row.version)||row.version<1||!DB_FIELDS.every(k=>Object.hasOwn(row,k)))throw new Error('La tabla no tiene la estructura esperada: revisá id, version y los 15 campos.');
- const record=normaliseRecord(Object.fromEntries(DB_FIELDS.map((name,i)=>[FIELDS[i].key,row[name]])),{strict:true});
- return {record,meta:{id:row.id,version:row.version,updatedAt:row.updated_at}};
+function palomarPayload(e){
+  const text=(v,max,label)=>{const t=String(v??'').trim();if(t.length>max)throw Error(label+': texto demasiado largo.');return t;};
+  const number=(v,min,integer,label)=>{if(v===null||v===undefined||v==='')return null;const n=Number(v);if(!Number.isFinite(n)||n<min||(integer&&!Number.isSafeInteger(n)))throw Error(label+': valor inválido.');return n;};
+  const dim=v=>{const n=number(v,Number.MIN_VALUE,false,'Medida');if(n===null)return null;const m=n/1000;if(!Number.isFinite(m)||m<=0)throw Error('Medida fuera de rango.');return m;};
+  const codigo=text(e.codigo,40,'Código');if(!codigo)throw Error('Completá el código.');
+  if(!Array.isArray(e.proveedores)||e.proveedores.length>100)throw Error('Lista de proveedores inválida.');
+  const proveedores=e.proveedores.map(p=>text(p,200,'Proveedor'));
+  const reserved=['planta','tránsito','en reparación','tránsito / otros'];
+  if(proveedores.some(p=>!p||reserved.includes(p.toLowerCase()))||new Set(proveedores.map(p=>p.toLowerCase())).size!==proveedores.length)throw Error('Hay proveedores vacíos, duplicados o nombres reservados.');
+  return {codigo,tipo:text(e.tipo,40,'Tipo'),descripcion:text(e.descripcion,120,'Descripción'),
+    largo_m:dim(e.largo),ancho_m:dim(e.ancho),alto_m:dim(e.alto),peso_kg:number(e.peso,0,false,'Peso'),
+    qme:number(e.qme,1,true,'QME'),stock_inicial:number(e.racksEnFlujo,0,true,'Stock'),proveedores,
+    observaciones:text(e.observaciones,1000,'Observaciones')};
 }
-async function fetchDatabase(client){
- const raw=[],step=500;let expected=null;
- for(let offset=0;;offset+=step){
-  const {data,error,count}=await client.from('embalajes').select(DB_SELECT,{count:'exact'}).order('id',{ascending:true}).range(offset,offset+step-1);
-  if(error)throw error;
-  if(!Array.isArray(data)||!Number.isSafeInteger(count))throw new Error('La base no devolvió la cantidad total de registros.');
-  if(expected===null)expected=count;
-  if(count!==expected)throw new Error('Se agregaron o quitaron registros durante la consulta. Volvé a actualizar.');
-  if(data.length!==Math.min(step,Math.max(0,expected-offset)))throw new Error('La consulta devolvió filas incompletas. Revisá el límite de filas de la API.');
-  raw.push(...data);if(raw.length>=expected)break;
- }
- const decoded=raw.map(decodeDatabase),records=validateRecords(decoded.map(x=>x.record));
- if(new Set(decoded.map(x=>x.meta.id)).size!==decoded.length)throw new Error('La consulta recibió filas repetidas. Volvé a actualizar.');
- return {records,meta:new Map(decoded.map(x=>[recordKey(x.record),x.meta]))};
+function palomarDecode(r){
+  if(!r||typeof r.id!=='string'||!Number.isSafeInteger(r.version)||r.version<1)throw Error('La tabla Palomar no tiene la estructura esperada.');
+  const n=v=>v===null?null:Number(v);
+  const mm=v=>v===null?null:Number(v)*1000;
+  const e={id:r.id,codigo:r.codigo,tipo:r.tipo,descripcion:r.descripcion,largo:mm(r.largo_m),ancho:mm(r.ancho_m),alto:mm(r.alto_m),peso:n(r.peso_kg),qme:n(r.qme),racksEnFlujo:n(r.stock_inicial),proveedores:r.proveedores,observaciones:r.observaciones,version:r.version,creado:r.created_at,actualizado:r.updated_at,thumbs:[null,null,null,null]};
+  // Validar la respuesta completa antes de reemplazar la copia visible.
+  for(const k of ['codigo','tipo','descripcion','observaciones'])if(typeof e[k]!=='string')throw Error('Respuesta Palomar incompleta.');
+  for(const k of ['largo_m','ancho_m','alto_m','peso_kg','qme','stock_inicial'])if(r[k]!==null&&(typeof r[k]!=='number'||!Number.isFinite(r[k])))throw Error('Respuesta numérica Palomar inválida.');
+  palomarPayload(e);return e;
 }
-async function saveDatabase(client,record,previous,newId){
- let result;
- const payload=toDatabase(record);
- try{
-  result=previous
-   ?await client.from('embalajes').update(payload).eq('id',previous.id).eq('version',previous.version).select(DB_SELECT).maybeSingle()
-   :await client.from('embalajes').insert({id:newId,...payload}).select(DB_SELECT).single();
- }catch{throw new UncertainWriteError();}
- if(result.error){
-  if(result.error.code==='23505')throw new Error('Ese identificador ya existe. Abrí su ficha para editarlo. Si antes hubo un fallo de conexión, consultá primero la última versión.');
-  if(['42501','23514','23502','22P02','22003'].includes(result.error.code))throw new Error('No se guardó. '+result.error.message);
-  throw new UncertainWriteError();
- }
- if(!result.data){if(previous)throw new ConflictError();throw new UncertainWriteError();}
- try{return decodeDatabase(result.data);}catch{throw new UncertainWriteError();}
+async function palomarFetch(client){
+  const rows=[];let expected=null;
+  for(let start=0;;start+=500){
+    const {data,error,count}=await client.from(PALOMAR_TABLE).select(PALOMAR_SELECT,{count:'exact'}).order('id',{ascending:true}).range(start,start+499);
+    if(error)throw error;
+    if(!Array.isArray(data)||!Number.isSafeInteger(count)||count<0)throw Error('No se pudo confirmar el total del catálogo.');
+    if(expected===null)expected=count;
+    if(count!==expected||data.length!==Math.min(500,Math.max(0,count-start)))throw Error('El catálogo cambió durante la consulta o llegó incompleto. Volvé a actualizar.');
+    rows.push(...data);if(rows.length>=expected)break;
+  }
+  const result=rows.map(palomarDecode);
+  if(new Set(result.map(e=>e.id)).size!==result.length||new Set(result.map(e=>e.codigo.toLowerCase())).size!==result.length)throw Error('Se recibieron identificadores duplicados.');
+  return result.sort((a,b)=>a.codigo.localeCompare(b.codigo,'es',{numeric:true}));
 }
-globalThis.RegistroOnline={DB_FIELDS,DB_SELECT,ConflictError,UncertainWriteError,toDatabase,decodeDatabase,fetchDatabase,saveDatabase};
+async function palomarSave(client,e,previous,newId){
+  const payload=palomarPayload(e);let result;
+  try{result=previous
+    ?await client.from(PALOMAR_TABLE).update(payload).eq('id',previous.id).eq('version',previous.version).select(PALOMAR_SELECT).maybeSingle()
+    :await client.from(PALOMAR_TABLE).insert({id:newId,...payload}).select(PALOMAR_SELECT).single();
+  }catch{throw new PalomarUncertain();}
+  if(result.error){
+    if(result.error.code==='23505')throw Error('Ese código ya existe. Revisá el catálogo antes de crear otra ficha.');
+    if(['42501','23514','23502','22P02','22003','P0001'].includes(result.error.code))throw Error('No se guardó. '+result.error.message);
+    throw new PalomarUncertain();
+  }
+  if(!result.data){if(previous)throw new PalomarConflict();throw new PalomarUncertain();}
+  try{return palomarDecode(result.data);}catch{throw new PalomarUncertain();}
+}
 
-'use strict';
-const PROJECT_URL='https://enacfespoldfksedmxuf.supabase.co';
-const PUBLISHABLE_KEY='sb_publishable_z_W0qS3p6v_7CxFHxdkwAg_bQGQRWdL';
-const $=s=>document.querySelector(s);
-const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const fmt=n=>n.toLocaleString('es-AR');
-let client=null,user=null,epoch=0,poll=null,reading=false,saving=false,blocked=false,ready=false;
-let records=[],meta=new Map(),index=new Map(),page=1,pageSize=50,editingKey=null,editingMeta=null,newId=null,initialForm='',lastSync=null,lastExportAt=null,searchTimer;
-function toast(message,error=false){const el=document.createElement('div');el.className='toast'+(error?' error':'');el.textContent=message;$('#toast').append(el);setTimeout(()=>el.remove(),8000);}
-function notice(message){$('#storage-warning').textContent=message;$('#storage-warning').hidden=!message;}
-function controls(){
- $('#save-form').disabled=saving||blocked||!user;
- $('#reload-record').disabled=saving||!user;
- $('#logout').disabled=saving;
- $('#close-form').disabled=saving;$('#cancel-form').disabled=saving;
- $('#record-form').querySelectorAll('input,[data-volume]').forEach(x=>x.disabled=saving);
- $('#new-record').disabled=!ready||reading||saving;
- $('#refresh').disabled=reading||saving;
- document.querySelectorAll('[data-download],[data-xlsx]').forEach(x=>x.disabled=!ready||reading||saving);
+"use strict";
+// El catálogo se consulta en Supabase. No hay almacenamiento local de registros.
+const dbGet = async () => null;
+/* ================= Utilidades ================= */
+const $ = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const fmt = n => Number(n || 0).toLocaleString('es-AR', {maximumFractionDigits: 2});
+const fmtFecha = iso => { if (!iso) return '—'; const [y,m,d] = iso.slice(0,10).split('-'); return `${d}/${m}/${y}`; };
+const hoy = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0,10); };
+const SLOTS = ['Frente', 'Lateral', 'Superior', 'Detalle'];
+const UBIC_PLANTA = 'Planta', UBIC_TRANSITO = 'Tránsito', UBIC_REP = 'En reparación', UBIC_LEGACY = 'Tránsito / Otros';
+const RESERVADAS = [UBIC_PLANTA, UBIC_TRANSITO, UBIC_REP, UBIC_LEGACY];
+const ubicaciones = e => [UBIC_PLANTA, ...(e.proveedores || []), UBIC_TRANSITO, UBIC_REP];
+/* Desglosa un conteo y calcula detectado, no detectado y piezas almacenables.
+   Piezas almacenables = (planta + proveedores + tránsito) × QME; lo que está en reparación no suma capacidad. */
+function calc(stock, qme, detalle){
+  const r = {planta: 0, prov: 0, provDet: {}, transito: 0, rep: 0, total: 0};
+  for (const [k, v0] of Object.entries(detalle || {})) {
+    const v = Number(v0) || 0; r.total += v;
+    if (k === UBIC_PLANTA) r.planta += v;
+    else if (k === UBIC_REP) r.rep += v;
+    else if (k === UBIC_TRANSITO || k === UBIC_LEGACY) r.transito += v;
+    else { r.prov += v; r.provDet[k] = v; }
+  }
+  r.sinStock = vacio(stock); r.stock = Number(stock) || 0; r.qme = Number(qme) || 0;
+  r.utiles = r.total - r.rep;
+  r.noDet = r.sinStock ? 0 : Math.max(0, r.stock - r.total);
+  r.sobr = r.sinStock ? 0 : Math.max(0, r.total - r.stock);
+  r.dif = r.sinStock ? 0 : r.total - r.stock;
+  r.piezas = r.utiles * r.qme;
+  return r;
 }
-function status(){
- $('#storage-state').textContent=lastSync?'Última consulta: '+lastSync.toLocaleTimeString('es-AR')+' · actualización cada 10 s':'Consultando la base…';
- $('#count-all').textContent=fmt(records.length);
- $('#identified-summary').textContent=`${fmt(records.filter(r=>r[PN]!==null).length)} con Part Number · ${fmt(records.filter(r=>r[PN]===null).length)} solo CQCA`;
- $('#count-cqca').textContent=fmt(records.filter(r=>r[CQCA]!==null).length);
- $('#count-empty').textContent=fmt(records.filter(missing).length);
- $('#count-changes').textContent=lastSync?lastSync.toLocaleTimeString('es-AR'):'—';
- $('#last-export').textContent=lastExportAt?'Última descarga: '+lastExportAt.toLocaleTimeString('es-AR'):'Todavía no descargaste un respaldo';controls();
+const vacio = v => v == null || v === '';
+const fmtN = v => vacio(v) ? '—' : fmt(v);
+function faltantes(e){
+  const f = [];
+  if (vacio(e.largo) || vacio(e.ancho) || vacio(e.alto)) f.push('medidas');
+  if (vacio(e.qme)) f.push('QME');
+  if (vacio(e.racksEnFlujo)) f.push('stock inicial');
+  return f;
 }
-function filtered(){const q=$('#search').value.trim().toLocaleLowerCase('es'),f=$('#filter').value;return records.filter(r=>{if(q&&!FIELDS.filter(x=>x.type==='text').some(x=>String(r[x.key]??'').toLocaleLowerCase('es').includes(q)))return false;if(f==='empty'&&!missing(r))return false;if(f==='cqca'&&r[CQCA]===null)return false;if(f==='no-cqca'&&r[CQCA]!==null)return false;return true;});}
-function renderGrid(){const list=filtered(),pages=Math.max(1,Math.ceil(list.length/pageSize));page=Math.min(page,pages);const start=(page-1)*pageSize,shown=list.slice(start,start+pageSize);
- $('#grid-body').innerHTML=shown.map(r=>`<tr>${FIELDS.map((f,i)=>i===0?`<td><button class="pn-link" data-edit="${esc(recordKey(r))}" title="Abrir ficha">${esc(r[PN]??'Sin Part Number')}</button></td>`:`<td><span class="cell-value">${esc(r[f.key])}</span></td>`).join('')}</tr>`).join('');
- $('#empty-state').hidden=shown.length>0;$('#page-info').textContent=list.length?`${fmt(start+1)}–${fmt(start+shown.length)} de ${fmt(list.length)} registros · ${fmt(records.length)} en total`:'0 registros mostrados';$('#page-number').textContent=`${page} / ${pages}`;$('#prev-page').disabled=page===1;$('#next-page').disabled=page===pages;
+const dims = e => faltantes(e).includes('medidas') ? 'Medidas pendientes' : `${fmt(e.ancho)} × ${fmt(e.largo)} × ${fmt(e.alto)} mm (A×L×H)`;
+const calcEmb = e => e.ultimoConteo ? calc(e.racksEnFlujo, e.qme, e.ultimoConteo.detalle) : null;
+const calcItem = it => calc(it.stock ?? it.flujoAntes, it.qme, it.conteo);
+function noDetHtml(c){
+  if (!c) return '<span class="badge neutral">Sin conteo</span>';
+  if (c.sinStock) return '<span class="badge neutral">Falta stock</span>';
+  if (c.noDet) return `<span class="badge bad">${fmt(c.noDet)}</span>`;
+  if (c.sobr) return `<span class="badge warn">+${fmt(c.sobr)} sobrante${c.sobr === 1 ? '' : 's'}</span>`;
+  return '<span class="badge ok">0</span>';
 }
-async function refresh({silent=false}={}){
- if(!user||saving||reading||$('#record-dialog').open)return false;
- const token=epoch;reading=true;controls();
- try{const result=await fetchDatabase(client);if(token!==epoch||$('#record-dialog').open)return false;
-  records=result.records;meta=result.meta;index=new Map(records.map(r=>[recordKey(r),r]));lastSync=new Date();ready=true;notice('');status();renderGrid();if(!silent)toast('Registro actualizado desde Supabase.');return true;
- }catch(e){if(token===epoch){notice('No se pudo actualizar. '+e.message);if(!silent)toast(e.message,true);}return false;
- }finally{if(token===epoch){reading=false;controls();}}
+const BOX_ICON = '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>';
+
+function toast(msg, type='ok'){
+  const t = document.createElement('div');
+  t.className = 'toast' + (type === 'error' ? ' error' : '');
+  t.textContent = msg;
+  $('#toast').appendChild(t);
+  setTimeout(() => t.remove(), 3600);
 }
-function setView(view){for(const v of ['registro','datos']){$('#view-'+v).hidden=v!==view;$('#tab-'+v).setAttribute('aria-current',v===view?'page':'false');}}
-function lockUI(message='Ingresá con tu usuario de la aplicación.'){
- epoch++;clearInterval(poll);user=null;records=[];meta=new Map();index=new Map();ready=false;reading=false;saving=false;blocked=false;editingKey=null;editingMeta=null;newId=null;lastSync=null;lastExportAt=null;page=1;
- if($('#record-dialog').open)$('#record-dialog').close();$('#record-form').reset();$('#form-error').textContent='';$('#form-warnings').textContent='';$('#form-warnings').hidden=true;$('#existing-notice').hidden=true;
- $('#search').value='';$('#filter').value='all';$('#grid-body').replaceChildren();$('#toast').replaceChildren();$('#session-email').textContent='';$('#app-root').hidden=true;$('#session-controls').hidden=true;$('#app-tabs').hidden=true;$('#auth-panel').hidden=false;$('#login-password').value='';$('#auth-message').textContent=message;notice('');setView('registro');status();renderGrid();
+function confirmar({titulo='Confirmar', html='', si='Confirmar', peligro=false}){
+  return new Promise(res => {
+    const d = $('#dlgConfirm');
+    $('#cfTitle').textContent = titulo; $('#cfBody').innerHTML = html;
+    const y = $('#cfYes'), n = $('#cfNo');
+    y.textContent = si; y.className = 'btn ' + (peligro ? 'danger' : 'primary');
+    const done = v => { y.onclick = n.onclick = null; d.onclose = null; if (d.open) d.close(); res(v); };
+    y.onclick = () => done(true); n.onclick = () => done(false); d.onclose = () => done(false);
+    d.showModal(); n.focus();
+  });
 }
-async function fetchWithTimeout(url,options={}){const controller=new AbortController(),cancel=()=>controller.abort(),signal=options.signal;if(signal?.aborted)controller.abort();signal?.addEventListener('abort',cancel,{once:true});const timer=setTimeout(cancel,20000);try{return await fetch(url,{...options,signal:controller.signal});}finally{clearTimeout(timer);signal?.removeEventListener('abort',cancel);}}
-async function login(event){event.preventDefault();if(!client)return;$('#login-submit').disabled=true;$('#auth-message').textContent='Iniciando sesión…';const token=epoch;
- try{const {data,error}=await client.auth.signInWithPassword({email:$('#login-email').value.trim(),password:$('#login-password').value});if(token!==epoch)return;if(error)throw error;if(!data.user||!data.session)throw new Error('No se recibió una sesión.');user=data.user;$('#session-email').textContent=data.user.email;$('#auth-panel').hidden=true;$('#app-root').hidden=false;$('#session-controls').hidden=false;$('#app-tabs').hidden=false;await refresh({silent:true});if(token!==epoch)return;poll=setInterval(()=>{if(!document.hidden)refresh({silent:true});},10000);
- }catch(e){if(token===epoch)$('#auth-message').textContent='No se pudo iniciar sesión. '+e.message;}finally{$('#login-password').value='';$('#login-submit').disabled=false;}}
-async function logout(){if(saving)return;if($('#record-dialog').open&&JSON.stringify(formValues())!==initialForm&&!window.confirm('Hay cambios sin guardar. ¿Querés cerrar sesión y descartarlos?'))return;lockUI('Cerrando sesión…');$('#login-submit').disabled=true;
- try{const {error}=await client.auth.signOut({scope:'local'});$('#auth-message').textContent=error?'Los datos se ocultaron. Recargá la página para descartar la sesión de esta prueba.':'Sesión cerrada.';}catch{$('#auth-message').textContent='Los datos se ocultaron. Recargá la página para descartar la sesión de esta prueba.';}finally{$('#login-submit').disabled=false;}}
-function formValues(){return Object.fromEntries(FIELDS.map((f,i)=>[f.key,$(`#f-${i}`).value]));}
-function fieldHTML(f,i){return `<div class="field"><label for="f-${i}">${esc(f.label)}</label><input id="f-${i}" name="field-${i}" type="text" ${f.type==='number'?'inputmode="decimal"':''} autocomplete="off" spellcheck="false"></div>`;}
-function buildForm(){const groups=[['identidad','Identificación'],['secundario','Embalaje secundario'],['primario','Embalaje primario']];$('#form-fields').innerHTML=groups.map(([group,title])=>`<fieldset><legend>${title}</legend><div class="form-grid ${group==='identidad'?'ids':''}">${FIELDS.map((f,i)=>f.group===group?fieldHTML(f,i):'').join('')}</div>${group!=='identidad'?`<div class="helper"><p>El M3 vacío se calcula al guardar. Un valor informado se conserva.</p><button class="btn sm" type="button" data-volume="${group}">Calcular M3</button></div>`:'<p class="note">Completá Part Number o CQCA. Podés incorporar después el Part Number a una ficha que solo tenga CQCA.</p>'}${group==='secundario'?'<p class="note">Las piezas por secundario vacías se calculan con primarios por secundario × piezas por primario.</p>':''}</fieldset>`).join('');}
-function updateFormWarnings(){try{const r=normaliseRecord(formValues()),messages=warnings(r);$('#form-warnings').textContent=messages.join(' ');$('#form-warnings').hidden=!messages.length;}catch{$('#form-warnings').hidden=true;}const pn=$('#f-0').value.trim(),cqca=$('#f-1').value.trim(),key=pn?'pn:'+pn:'cqca:'+cqca;$('#existing-notice').hidden=!(editingKey===null&&index.has(key));}
-function fillForm(record){$('#record-form').reset();FIELDS.forEach((f,i)=>$(`#f-${i}`).value=record?.[f.key]??'');$('#f-0').readOnly=Boolean(record&&record[PN]!==null);$('#form-title').textContent=record?'Editar '+(record[PN]??record[CQCA]):'Nuevo registro';$('#form-error').textContent='';$('#existing-notice').hidden=true;blocked=false;initialForm=JSON.stringify(formValues());updateFormWarnings();controls();}
-function openForm(key=null){if(!user||!ready||reading||saving)return;const record=key===null?null:index.get(key);if(key!==null&&!record)return;editingKey=key;editingMeta=key===null?null:{...meta.get(key)};newId=key===null?crypto.randomUUID():null;fillForm(record);$('#record-dialog').showModal();$('#f-'+(record&&record[PN]!==null?1:0)).focus();}
-function closeForm(){if(saving)return;if(JSON.stringify(formValues())!==initialForm&&!window.confirm('Hay cambios en la ficha sin guardar. ¿Querés descartarlos?'))return;$('#record-dialog').close();refresh({silent:true});}
-function applyServerRow(decoded){
- const oldKey=[...meta].find(([,m])=>m.id===decoded.meta.id)?.[0];
- const next=records.filter(r=>recordKey(r)!==oldKey),key=recordKey(decoded.record);
- // La base garantiza unicidad; no reemplazar silenciosamente otro id si la copia está desactualizada.
- if(next.some(r=>recordKey(r)===key))throw new Error('La copia de la tabla está desactualizada. Cerrá la ficha y actualizá para comprobar el guardado.');
- records=upsert(next,decoded.record);if(oldKey)meta.delete(oldKey);meta.set(key,decoded.meta);index=new Map(records.map(r=>[recordKey(r),r]));
+function difBadge(d){
+  if (d === 0) return '<span class="badge ok">✓ Coincide</span>';
+  if (d < 0) return `<span class="badge bad">▼ ${fmt(-d)} no detectado${-d === 1 ? '' : 's'}</span>`;
+  return `<span class="badge warn">▲ ${fmt(d)} sobrante${d === 1 ? '' : 's'}</span>`;
 }
-async function saveForm(event){event.preventDefault();if(saving||blocked||!user)return;$('#form-error').textContent='';let derived;
- try{derived=derive(normaliseRecord(formValues()));upsert(records,derived.record,editingKey);}catch(e){$('#form-error').textContent=e.message;return;}
- const token=epoch;saving=true;controls();let confirmed=false;
- try{const decoded=await saveDatabase(client,derived.record,editingMeta,newId);confirmed=true;if(token!==epoch)return;applyServerRow(decoded);$('#record-dialog').close();lastSync=new Date();status();renderGrid();toast('Registro guardado en Supabase.');
- }catch(e){if(token===epoch){$('#form-error').textContent=e.message;if(confirmed||e instanceof ConflictError||e instanceof UncertainWriteError)blocked=true;}}
- finally{if(token===epoch){saving=false;controls();}}
+function totalDe(c){
+  let t = 0, any = false;
+  for (const k in (c || {})) { const v = c[k]; if (v !== '' && v != null && !isNaN(v)) { t += Number(v); any = true; } }
+  return {t, any};
 }
-async function reloadRecord(){if(saving||!user)return;if(JSON.stringify(formValues())!==initialForm&&!window.confirm('Se descartarán los cambios de esta ficha para consultar la base. ¿Continuar?'))return;
- const token=epoch,id=editingMeta?.id??newId;saving=true;controls();$('#form-error').textContent='Consultando última versión…';
- try{const {data,error}=await client.from('embalajes').select(DB_SELECT).eq('id',id).maybeSingle();if(token!==epoch)return;if(error)throw error;
-  if(data){const decoded=decodeDatabase(data);applyServerRow(decoded);editingKey=recordKey(decoded.record);editingMeta=decoded.meta;newId=null;fillForm(decoded.record);status();renderGrid();toast('Se cargó la versión actual de la base.');}
-  else if(editingMeta){blocked=true;throw new Error('La ficha ya no está disponible. Cerrala y actualizá el registro.');}
-  else{blocked=false;$('#form-error').textContent='No se encontró el registro de este intento. Podés revisar la ficha y volver a guardar.';}
- }catch(e){if(token===epoch)$('#form-error').textContent='No se pudo cargar la última versión. '+e.message;}
- finally{if(token===epoch){saving=false;controls();}}
+function blobToDataURL(b){ return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(r.error); r.readAsDataURL(b); }); }
+async function dataURLToBlob(u){ return (await fetch(u)).blob(); }
+function descargar(nombre, contenido, tipo){
+  const b = contenido instanceof Blob ? contenido : new Blob([contenido], {type: tipo});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = nombre;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 }
-function dateName(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
-async function download(format){if(!user||saving||reading)return;if($('#record-dialog').open){toast('Cerrá la ficha antes de descargar.',true);return;}const token=epoch;if(!await refresh({silent:true})||token!==epoch){toast('No se descargó: no se pudo consultar la base actualizada.',true);return;}
- try{const rows=validateRecords(records),bytes=format==='xlsx'?makeXlsxBytes(rows):JSON.stringify(rows,null,2)+'\n',blob=new Blob([bytes],{type:format==='xlsx'?'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`registro_unico_embalajes_${dateName()}.${format}`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);lastExportAt=new Date();status();toast('Descarga del registro completo preparada.');}catch(e){toast('No se pudo descargar. '+e.message,true);}}
-$('#grid-head').innerHTML=FIELDS.map(f=>`<th scope="col">${esc(f.key)}</th>`).join('');$('#schema-body').innerHTML=FIELDS.map(f=>`<tr><td>${esc(f.key)}</td><td>${f.type==='number'?'Número o null':'Texto o null'}</td></tr>`).join('');
-buildForm();lockUI();
-document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
-document.querySelectorAll('[data-download]').forEach(b=>b.addEventListener('click',()=>download('json')));document.querySelectorAll('[data-xlsx]').forEach(b=>b.addEventListener('click',()=>download('xlsx')));
-$('#login-form').addEventListener('submit',login);$('#logout').addEventListener('click',logout);$('#refresh').addEventListener('click',()=>refresh());$('#new-record').addEventListener('click',()=>openForm());
-$('#grid-body').addEventListener('click',e=>{const b=e.target.closest('[data-edit]');if(b)openForm(b.dataset.edit);});
-$('#search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>{page=1;renderGrid();},180);});$('#filter').addEventListener('change',()=>{page=1;renderGrid();});$('#page-size').addEventListener('change',()=>{pageSize=Number($('#page-size').value);page=1;renderGrid();});$('#prev-page').addEventListener('click',()=>{page--;renderGrid();});$('#next-page').addEventListener('click',()=>{page++;renderGrid();});
-$('#record-form').addEventListener('submit',saveForm);$('#record-form').addEventListener('input',updateFormWarnings);$('#close-form').addEventListener('click',closeForm);$('#cancel-form').addEventListener('click',closeForm);$('#record-dialog').addEventListener('cancel',e=>{e.preventDefault();closeForm();});$('#reload-record').addEventListener('click',reloadRecord);
-$('#open-existing').addEventListener('click',()=>{const pn=$('#f-0').value.trim(),cqca=$('#f-1').value.trim(),key=pn?'pn:'+pn:'cqca:'+cqca;if(index.has(key)&&window.confirm('¿Descartar esta ficha y abrir la existente?')){$('#record-dialog').close();openForm(key);}});
-$('#record-form').addEventListener('click',e=>{const b=e.target.closest('[data-volume]');if(!b||saving)return;try{const indices=b.dataset.volume==='secundario'?[3,4,5]:[10,11,12],v=b.dataset.volume==='secundario'?8:14,values=indices.map(i=>parseNumber($(`#f-${i}`).value,FIELDS[i].label));if(values.some(isEmpty))throw new Error('Completá las tres dimensiones para calcular el M3.');$(`#f-${v}`).value=checkedProduct(...values);updateFormWarnings();}catch(err){$('#form-error').textContent=err.message;}});
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh({silent:true});});
-try{if(!window.supabase)throw new Error('No se pudo cargar Supabase. Revisá la conexión y recargá la página.');client=window.supabase.createClient(PROJECT_URL,PUBLISHABLE_KEY,{auth:{persistSession:false,autoRefreshToken:true,detectSessionInUrl:false},global:{fetch:fetchWithTimeout}});client.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'&&user)lockUI('La sesión terminó. Ingresá nuevamente.');});}
-catch(e){$('#login-submit').disabled=true;$('#auth-message').textContent=e.message;}
+function csvCell(v){ const s = String(v ?? ''); return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+function csv(rows){ return '\ufeff' + rows.map(r => r.map(csvCell).join(';')).join('\r\n'); }
+const num = v => String(v ?? '').replace('.', ',');
+
+/* ================= Imágenes ================= */
+function cargarImg(file){
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); res(img); };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('No se pudo leer la imagen')); };
+    img.src = url;
+  });
+}
+function escalar(img, max){
+  const s = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+  const c = document.createElement('canvas');
+  c.width = Math.max(1, Math.round(img.naturalWidth * s)); c.height = Math.max(1, Math.round(img.naturalHeight * s));
+  const x = c.getContext('2d'); x.fillStyle = '#FFFFFF'; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height);
+  return c;
+}
+async function procesarImagen(file){
+  const img = await cargarImg(file);
+  const blob = await new Promise(r => escalar(img, 1400).toBlob(r, 'image/jpeg', 0.82));
+  const thumb = escalar(img, 360).toDataURL('image/jpeg', 0.75);
+  return {blob, thumb};
+}
+
+/* ================= Estado ================= */
+const state = { embalajes: [], inventarios: [], draft: null, ultimoRespaldo: null, view: 'tablero', q: '', prov: '', invQ: '', invSolo: 'todos' };
+/* ================= Navegación ================= */
+function ir(view){
+  if(!palomarUser||palomarBusy)return;
+  if(cordobaController?.isBusy()){toast('Esperá a que termine el guardado de Córdoba.','error');return;}
+  state.view = view;
+  $('#appSubtitle').textContent=view==='cordoba'?'Córdoba · Registro de piezas y embalajes':'Palomar · Catálogo e inventario de racks';
+  $$('nav.tabs button[data-view]').forEach(b => {
+    if (b.dataset.view === view) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+  });
+  render();
+  window.scrollTo(0, 0);
+}
+function render(){
+  if(!palomarUser)return;
+  const cordoba = state.view === 'cordoba';
+  $('#main').hidden = cordoba;
+  $('#cordobaPanel').hidden = !cordoba;
+  $('#datosPalomar').hidden = cordoba;
+  $('#onlineNotice').hidden = cordoba;
+  $('#onlineRefresh').hidden=cordoba;$('#datosCordoba').hidden=!cordoba;
+  if (cordoba) {
+    if(!cordobaController){
+      cordobaController=window.mountCordobaRegistro($('#cordobaContent'),{client:palomarClient,user:palomarUser,isVisible:()=>Boolean(palomarUser&&state.view==='cordoba'),onStatus:palomarControls});
+    }else cordobaController.refresh();
+    cordobaController.setView(cordobaView);
+    return;
+  }
+  const m = $('#main');
+  ({tablero: renderTablero, embalajes: renderEmbalajes, grilla: renderGrilla, inventario: renderPendiente, historial: renderPendiente})[state.view](m);
+}
+
+/* ================= Tablero ================= */
+function renderEmbalajes(m){
+  const q = state.q.trim().toLowerCase();
+  const lista = state.embalajes.filter(e =>
+    (!state.prov || (e.proveedores || []).includes(state.prov)) &&
+    (!q || [e.codigo, e.descripcion, e.tipo, e.observaciones, ...(e.proveedores || [])].join(' ').toLowerCase().includes(q)));
+  m.innerHTML = `
+    <div class="page-head"><div><h1>Embalajes</h1><p>${fmt(state.embalajes.length)} modelo${state.embalajes.length === 1 ? '' : 's'} registrado${state.embalajes.length === 1 ? '' : 's'}.</p></div>
+      <button class="btn primary" data-action="nuevo">+ Nuevo embalaje</button></div>
+    <div class="toolbar">
+      <label class="sr-only" for="q">Buscar</label>
+      <input type="search" id="q" class="search" placeholder="Buscar por código, descripción, proveedor…" value="${esc(state.q)}">
+      <label class="sr-only" for="fprov">Filtrar por proveedor</label>
+      <select id="fprov"><option value="">Todos los proveedores</option>${state.proveedores.map(p => `<option ${p === state.prov ? 'selected' : ''}>${esc(p)}</option>`).join('')}</select>
+    </div>
+    <div id="embGrid"></div>`;
+  pintarGrid(lista);
+  const qi = $('#q');
+  qi.addEventListener('input', () => { state.q = qi.value; const ql = qi.value.trim().toLowerCase();
+    pintarGrid(state.embalajes.filter(e => (!state.prov || (e.proveedores || []).includes(state.prov)) && (!ql || [e.codigo, e.descripcion, e.tipo, e.observaciones, ...(e.proveedores || [])].join(' ').toLowerCase().includes(ql)))); });
+  $('#fprov').addEventListener('change', ev => { state.prov = ev.target.value; renderEmbalajes(m); });
+}
+function pintarGrid(lista){
+  const g = $('#embGrid');
+  if (!state.embalajes.length) { g.innerHTML = `<div class="panel empty"><h3>No hay embalajes cargados</h3><p>Agregá el primero con sus medidas, QME, proveedores y fotos.</p><button class="btn primary" data-action="nuevo">+ Nuevo embalaje</button></div>`; return; }
+  if (!lista.length) { g.innerHTML = `<div class="panel empty"><h3>Sin resultados</h3><p>Probá con otra búsqueda o quitá el filtro de proveedor.</p></div>`; return; }
+  g.innerHTML = `<div class="grid-cards">${lista.map(e => {
+    const thumbs = (e.thumbs || []).filter(Boolean);
+    const uc = e.ultimoConteo, cc = calcEmb(e);
+    return `<button class="panel emb-card" data-det="${e.id}" aria-label="Ver ${esc(e.codigo)}">
+      <div class="emb-thumb">${thumbs[0] ? `<img src="${thumbs[0]}" alt="">` : BOX_ICON}${thumbs.length > 1 ? `<span class="count">${thumbs.length} fotos</span>` : ''}</div>
+      <div class="emb-info">
+        <div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><span class="emb-code">${esc(e.codigo)}</span>${faltantes(e).length ? '<span class="badge bad">Incompleto</span>' : cc ? difBadge(cc.dif) : '<span class="badge neutral">Sin conteo</span>'}</div>
+        <div class="emb-desc">${[esc(e.tipo), esc(e.descripcion)].filter(Boolean).join(' · ') || '&nbsp;'}</div>
+        <div class="emb-desc">${dims(e)}</div>
+        ${(e.proveedores || []).length ? `<div class="chips">${e.proveedores.slice(0, 3).map(p => `<span class="chip">${esc(p)}</span>`).join('')}${e.proveedores.length > 3 ? `<span class="chip">+${e.proveedores.length - 3}</span>` : ''}</div>` : ''}
+        <div class="emb-stats"><div>QME<b>${fmtN(e.qme)}</b></div><div>Stock inicial<b>${fmtN(e.racksEnFlujo)}</b></div><div>Detectado<b>${cc ? fmt(cc.total) : '—'}</b></div></div>
+        <div class="emb-stats" style="border-top:0;padding-top:0"><div>En reparación<b>${cc ? fmt(cc.rep) : '—'}</b></div><div>No detectado<b>${cc ? fmt(cc.noDet) : '—'}</b></div><div>Piezas<b>${cc ? fmt(cc.piezas) : '—'}</b></div></div>
+      </div></button>`;
+  }).join('')}</div>`;
+}
+
+/* ---------- Formulario ---------- */
+let formState = null; // {id, provs:[], imgs:[{blob,thumb,url,changed}|null x4]}
+function chipsProv(){
+  const box = $('#provBox'), inp = $('#f_prov');
+  $$('.chip', box).forEach(c => c.remove());
+  formState.provs.forEach((p, i) => {
+    const c = document.createElement('span'); c.className = 'chip';
+    c.innerHTML = `${esc(p)}<button type="button" aria-label="Quitar ${esc(p)}" data-i="${i}">×</button>`;
+    box.insertBefore(c, inp);
+  });
+}
+function agregarProv(){
+  const inp = $('#f_prov'); const v = inp.value.replace(/,/g, ' ').trim().replace(/\s+/g, ' ');
+  if (!v) return;
+  if (!formState.provs.some(p => p.toLowerCase() === v.toLowerCase())) {
+    if (RESERVADAS.some(x => x.toLowerCase() === v.toLowerCase())) { toast('Ese nombre está reservado para ubicaciones internas', 'error'); return; }
+    formState.provs.push(v);
+  }
+  inp.value = ''; chipsProv();
+}
+function pintarSlots(){
+  $('#imgSlots').innerHTML = SLOTS.map((n, i) => {
+    const im = formState.imgs[i];
+    return im ? `<div class="slot has"><img src="${im.thumb}" alt="Foto ${n}"><span class="slot-name">${n}</span><button type="button" class="rm" data-rm="${i}" aria-label="Quitar foto ${n}">×</button><input type="file" accept="image/*" data-slot="${i}" aria-label="Reemplazar foto ${n}"></div>`
+              : `<label class="slot"><span class="plus" aria-hidden="true">+</span><span>${n}</span><input type="file" accept="image/*" data-slot="${i}" aria-label="Cargar foto ${n}"></label>`;
+  }).join('');
+}
+function validarForm(){
+  const errs = {};
+  const val = id => $('#' + id).value.trim();
+  const codigo = val('f_codigo'), desc = val('f_desc');
+  if (!codigo) errs.codigo = 'Ingresá el código del embalaje.';
+  else if (state.embalajes.some(e => e.id !== formState.id && e.codigo.toLowerCase() === codigo.toLowerCase())) errs.codigo = 'Ya existe un embalaje con este código.';
+  const nums = {};
+  for (const [k, id, req, min, entero, txt] of [
+    ['largo','f_largo',false,0,false,'el largo'],['ancho','f_ancho',false,0,false,'el ancho'],['alto','f_alto',false,0,false,'el alto'],
+    ['peso','f_peso',false,-1,false,'el peso'],['qme','f_qme',false,0,true,'el QME'],['flujo','f_flujo',false,-1,true,'el stock inicial']]) {
+    const raw = val(id);
+    if (raw === '') { if (req) errs[k] = `Ingresá ${txt}.`; nums[k] = null; continue; }
+    const n = Number(raw);
+    if (!isFinite(n)) errs[k] = 'Tiene que ser un número.';
+    else if (n <= min) errs[k] = min === 0 ? 'Tiene que ser mayor a 0.' : 'No puede ser negativo.';
+    else if (entero && !Number.isInteger(n)) errs[k] = 'Tiene que ser un número entero.';
+    nums[k] = n;
+  }
+  const map = {codigo:'f_codigo',descripcion:'f_desc',largo:'f_largo',ancho:'f_ancho',alto:'f_alto',peso:'f_peso',qme:'f_qme',flujo:'f_flujo'};
+  for (const k in map) { $('#e_' + k).textContent = errs[k] || ''; $('#' + map[k]).classList.toggle('invalid', !!errs[k]); $('#' + map[k]).setAttribute('aria-invalid', errs[k] ? 'true' : 'false'); $('#' + map[k]).setAttribute('aria-describedby', 'e_' + k); }
+  const first = Object.keys(errs)[0];
+  if (first) { $('#' + map[first]).focus(); return null; }
+  return {codigo, descripcion: desc, tipo: val('f_tipo'), largo: nums.largo, ancho: nums.ancho, alto: nums.alto, peso: nums.peso, qme: nums.qme, racksEnFlujo: nums.flujo, observaciones: val('f_obs')};
+}
+/* ---------- Detalle ---------- */
+let detUrls = [];
+async function abrirDetalle(id){
+  const e = state.embalajes.find(x => x.id === id); if (!e) return;
+  detUrls.forEach(u => URL.revokeObjectURL(u)); detUrls = [];
+  const imgs = [];
+  for (let i = 0; i < 4; i++) {
+    if (e.thumbs && e.thumbs[i]) { const r = await dbGet('imagenes', `${e.id}_${i}`); const u = r && r.blob ? URL.createObjectURL(r.blob) : e.thumbs[i]; if (r && r.blob) detUrls.push(u); imgs.push({i, url: u, thumb: e.thumbs[i]}); }
+  }
+  const hist = state.inventarios.filter(inv => inv.items.some(it => it.embId === e.id)).slice(0, 10);
+  const vol = faltantes(e).includes('medidas') ? null : (e.largo * e.ancho * e.alto / 1e9);
+  const cE = calcEmb(e);
+  $('#detWrap').innerHTML = `
+    <header class="dlg-head"><h2 id="detTitle">${esc(e.codigo)}${e.descripcion || e.tipo ? ` <span style="font-weight:500;color:var(--muted);font-size:15px">· ${[esc(e.tipo), esc(e.descripcion)].filter(Boolean).join(' · ')}</span>` : ''}</h2><button type="button" class="icon-btn" data-close aria-label="Cerrar">×</button></header>
+    <div class="dlg-body">
+      <div class="det-top">
+        <div>
+          <div class="gallery-main" id="galMain">${imgs[0] ? `<img src="${imgs[0].url}" alt="${esc(e.codigo)} – ${SLOTS[imgs[0].i]}" data-zoom="${imgs[0].i}">` : BOX_ICON + '<span class="sr-only">Sin fotos</span>'}</div>
+          <div class="gallery-thumbs">${SLOTS.map((n, i) => { const im = imgs.find(x => x.i === i);
+            return im ? `<button type="button" data-gal="${i}" aria-pressed="${im === imgs[0]}" aria-label="Ver foto ${n}"><img src="${im.thumb}" alt=""></button>` : `<button type="button" disabled aria-label="Sin foto ${n}">${n}</button>`; }).join('')}</div>
+        </div>
+        <div>
+          <dl class="specs">
+            <dt>Tipo</dt><dd>${esc(e.tipo) || '—'}</dd>
+            <dt>Medidas</dt><dd>${dims(e)}</dd>
+            <dt>Volumen</dt><dd>${vol == null ? '—' : vol.toLocaleString('es-AR', {maximumFractionDigits: 3}) + ' m³'}</dd>
+            <dt>Peso vacío</dt><dd>${e.peso != null ? fmt(e.peso) + ' kg' : '—'}</dd>
+            ${faltantes(e).length ? `<dt>Pendiente</dt><dd><span class="badge bad">Falta: ${faltantes(e).join(', ')}</span></dd>` : ''}
+            <dt>QME</dt><dd>${vacio(e.qme) ? '—' : fmt(e.qme) + ' piezas'}</dd>
+            <dt>Stock inicial</dt><dd>${vacio(e.racksEnFlujo) ? '—' : fmt(e.racksEnFlujo) + ' racks (fijo)'}</dd>
+            <dt>Capacidad teórica</dt><dd>${vacio(e.racksEnFlujo) || vacio(e.qme) ? '—' : fmt(e.racksEnFlujo * e.qme) + ' piezas'}</dd>
+            ${cE ? `<dt>Último conteo</dt><dd>${fmtFecha(e.ultimoConteo.fecha)}</dd>
+            <dt>Total detectado</dt><dd>${fmt(cE.total)} racks</dd>
+            <dt>En reparación</dt><dd>${fmt(cE.rep)}</dd>
+            <dt>No detectado</dt><dd>${noDetHtml(cE)}</dd>
+            <dt>Piezas almacenables</dt><dd>${fmt(cE.piezas)} <span style="font-weight:400;color:var(--muted)">(${fmt(cE.utiles)} racks × ${fmt(cE.qme)})</span></dd>` : '<dt>Último conteo</dt><dd>Sin conteo</dd>'}
+          </dl>
+          <h3 class="section-title">Proveedores</h3>
+          ${(e.proveedores || []).length ? `<div class="chips">${e.proveedores.map(p => `<span class="chip">${esc(p)}</span>`).join('')}</div>` : '<p style="color:var(--muted);margin:0">Sin proveedores asignados.</p>'}
+          ${e.observaciones ? `<h3 class="section-title">Observaciones</h3><p style="margin:0;white-space:pre-wrap">${esc(e.observaciones)}</p>` : ''}
+        </div>
+      </div>
+      ${e.ultimoConteo && Object.keys(e.ultimoConteo.detalle || {}).length ? `<h3 class="section-title">Distribución en el último conteo</h3><div class="chips">${Object.entries(e.ultimoConteo.detalle).map(([u, v]) => `<span class="chip">${esc(u)}: <b>${fmt(v)}</b></span>`).join('')}</div>` : ''}
+      <h3 class="section-title">Historial de inventarios</h3>
+      ${hist.length ? `<div class="tbl-wrap"><table><thead><tr><th>Fecha</th><th>Responsable</th><th class="num">Stock inicial</th><th class="num">Detectado</th><th class="num">En reparación</th><th class="num">No detectado</th><th class="num">Piezas</th></tr></thead><tbody>
+        ${hist.map(inv => { const c = calcItem(inv.items.find(x => x.embId === e.id)); return `<tr><td>${fmtFecha(inv.fecha)}</td><td>${esc(inv.responsable) || '—'}</td><td class="num">${fmt(c.stock)}</td><td class="num">${fmt(c.total)}</td><td class="num">${fmt(c.rep)}</td><td class="num">${noDetHtml(c)}</td><td class="num">${fmt(c.piezas)}</td></tr>`; }).join('')}
+      </tbody></table></div>` : '<p style="color:var(--muted);margin:0">Todavía no figura en ningún inventario cerrado.</p>'}
+    </div>
+    <footer class="dlg-foot"><button class="btn" data-close>Cerrar</button><button class="btn primary" data-edit="${e.id}">Editar</button></footer>`;
+  const d = $('#dlgDet');
+  d.dataset.id = e.id; d._imgs = imgs;
+  if (!d.open) d.showModal();
+}
+/* ================= Grilla (edición tipo planilla) ================= */
+const GCOLS = [
+  {f: 'tipo', t: 'Tipo', kind: 'text', w: 130, list: 'dl_tipos'},
+  {f: 'descripcion', t: 'Descripción', kind: 'text', w: 200},
+  {f: 'ancho', t: 'Ancho (mm)', kind: 'num', min: 0, w: 90},
+  {f: 'largo', t: 'Largo (mm)', kind: 'num', min: 0, w: 90},
+  {f: 'alto', t: 'Alto (mm)', kind: 'num', min: 0, w: 90},
+  {f: 'peso', t: 'Peso vacío (kg)', kind: 'num', min: -1, w: 90},
+  {f: 'qme', t: 'QME (piezas)', kind: 'int', min: 0, w: 85},
+  {f: 'racksEnFlujo', t: 'Stock inicial', kind: 'int', min: -1, w: 85},
+  {f: 'proveedores', t: 'Proveedores (separar con coma)', kind: 'list', w: 220},
+];
+state.gQ = ''; state.gTipo = ''; state.gSolo = false;
+function renderGrilla(m){
+  const tipos = [...new Set(state.embalajes.map(e => e.tipo).filter(Boolean))].sort();
+  m.innerHTML = `
+    <div class="page-head"><div><h1>Grilla de embalajes</h1><p id="gResumen"></p></div>
+      <div class="inv-actions"><button class="btn" data-action="csv-catalogo">Exportar a Excel (.csv)</button><button class="btn primary" data-action="nuevo">+ Nuevo embalaje</button></div></div>
+    <div class="toolbar">
+      <label class="sr-only" for="gq">Buscar</label>
+      <input type="search" id="gq" class="search" placeholder="Buscar código, tipo, descripción o proveedor…" value="${esc(state.gQ)}">
+      <label class="sr-only" for="gtipo">Tipo</label>
+      <select id="gtipo"><option value="">Todos los tipos</option>${tipos.map(t => `<option ${t === state.gTipo ? 'selected' : ''}>${esc(t)}</option>`).join('')}<option value="__sin" ${state.gTipo === '__sin' ? 'selected' : ''}>Sin tipo</option></select>
+      <label class="check" style="padding:7px 10px"><input type="checkbox" id="gsolo" ${state.gSolo ? 'checked' : ''}><span>Solo con datos pendientes</span></label>
+    </div>
+    <p class="hint" style="color:var(--muted);font-size:13px;margin:-4px 0 10px">Usá <b>Editar ficha</b> para modificar un modelo. El guardado detecta si otra persona modificó la misma ficha.</p>
+    <div class="panel grid-wrap"><table class="grid-edit"><thead><tr>
+      <th class="sticky-col">Código</th>${GCOLS.map(c => `<th style="min-width:${c.w}px">${c.t}</th>`).join('')}<th>Ficha</th><th>Estado</th>
+    </tr></thead><tbody id="gBody"></tbody></table></div>`;
+  pintarGrilla();
+  $('#gq').addEventListener('input', ev => { state.gQ = ev.target.value; pintarGrilla(); });
+  $('#gtipo').addEventListener('change', ev => { state.gTipo = ev.target.value; pintarGrilla(); });
+  $('#gsolo').addEventListener('change', ev => { state.gSolo = ev.target.checked; pintarGrilla(); });
+}
+function estadoHtml(e){
+  const f = faltantes(e);
+  return f.length ? `<span class="badge bad" title="Falta: ${f.join(', ')}">Falta: ${f.join(', ')}</span>` : '<span class="badge ok">✓ Completo</span>';
+}
+function resumenGrilla(){
+  const r = $('#gResumen'); if (!r) return;
+  const tot = state.embalajes.length, comp = state.embalajes.filter(e => !faltantes(e).length).length;
+  r.innerHTML = `${fmt(tot)} embalajes · <b>${fmt(comp)} completo${comp === 1 ? '' : 's'}</b> · ${fmt(tot - comp)} con datos pendientes`;
+}
+function valorCelda(e, c){
+  const v = e[c.f];
+  if (c.kind === 'list') return (v || []).join(', ');
+  if (vacio(v)) return '';
+  return (c.kind === 'num' ? String(v).replace('.', ',') : String(v));
+}
+function pintarGrilla(){
+  const q = state.gQ.trim().toLowerCase();
+  const lista = state.embalajes.filter(e =>
+    (!state.gTipo || (state.gTipo === '__sin' ? !e.tipo : e.tipo === state.gTipo)) &&
+    (!state.gSolo || faltantes(e).length) &&
+    (!q || [e.codigo, e.tipo, e.descripcion, ...(e.proveedores || [])].join(' ').toLowerCase().includes(q)));
+  const b = $('#gBody');
+  b.innerHTML = lista.length ? lista.map(e => {
+    const nf = (e.thumbs || []).filter(Boolean).length;
+    return `<tr data-row="${e.id}">
+      <th scope="row" class="sticky-col"><button class="link" data-det="${e.id}" title="Ver ficha">${esc(e.codigo)}</button></th>
+      ${GCOLS.map(c => `<td><input type="text" ${c.kind === 'num' || c.kind === 'int' ? `inputmode="${c.kind === 'int' ? 'numeric' : 'decimal'}" class="r"` : ''} ${c.list ? `list="${c.list}"` : ''} readonly data-g="${e.id}" data-f="${c.f}" value="${esc(valorCelda(e, c))}" aria-label="${esc(c.t)} de ${esc(e.codigo)}"></td>`).join('')}
+      <td><button class="btn sm" data-action="abrir-form" data-id="${e.id}" aria-label="Editar ficha de ${esc(e.codigo)}">Editar ficha</button></td>
+      <td id="est_${e.id}">${estadoHtml(e)}</td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="${GCOLS.length + 3}" class="empty" style="padding:30px">No hay embalajes que coincidan con el filtro.</td></tr>`;
+  resumenGrilla();
+}
+function parseCelda(c, raw){
+  const s = raw.trim();
+  if (c.kind === 'text') return {v: s};
+  if (c.kind === 'list') {
+    const out = [];
+    for (const p of s.split(/[,;]/).map(x => x.trim().replace(/\s+/g, ' ')).filter(Boolean)) {
+      if (RESERVADAS.some(r => r.toLowerCase() === p.toLowerCase())) return {err: `"${p}" es un nombre reservado de ubicación`};
+      if (!out.some(o => o.toLowerCase() === p.toLowerCase())) out.push(p);
+    }
+    return {v: out};
+  }
+  if (s === '') return {v: null};
+  const n = Number(s.replace(/\./g, c.kind === 'num' && /,/.test(s) ? '' : '.').replace(',', '.'));
+  if (!isFinite(n)) return {err: 'Tiene que ser un número'};
+  if (n <= c.min) return {err: c.min === 0 ? 'Tiene que ser mayor a 0' : 'No puede ser negativo'};
+  if (c.kind === 'int' && !Number.isInteger(n)) return {err: 'Tiene que ser un número entero'};
+  return {v: n};
+}
+function csvCatalogo(){
+  const rows = [['Código','Descripción','Tipo','Largo (mm)','Ancho (mm)','Alto (mm)','Peso vacío (kg)','QME','Stock inicial','Capacidad teórica (piezas)','Proveedores','Último conteo (fecha)','Planta','Proveedores (total)','Tránsito','En reparación','Total detectado','No detectado','Sobrante','Piezas almacenables','Observaciones']];
+  state.embalajes.forEach(e => { const c = calcEmb(e);
+    rows.push([e.codigo, e.descripcion, e.tipo, num(e.largo), num(e.ancho), num(e.alto), e.peso != null ? num(e.peso) : '', e.qme ?? '', e.racksEnFlujo ?? '', vacio(e.qme) || vacio(e.racksEnFlujo) ? '' : e.qme * e.racksEnFlujo, (e.proveedores || []).join(', '),
+      c ? fmtFecha(e.ultimoConteo.fecha) : '', c ? c.planta : '', c ? c.prov : '', c ? c.transito : '', c ? c.rep : '', c ? c.total : '', c ? c.noDet : '', c ? c.sobr : '', c ? c.piezas : '', e.observaciones]); });
+  descargar(`catalogo_embalajes_${hoy()}.csv`, csv(rows), 'text/csv;charset=utf-8');
+}
+
+/* ================= Respaldo ================= */
+/* ================= Eventos ================= */
+document.addEventListener('click', async ev => {
+  const t = ev.target;
+  if(palomarBusy)return;
+  const close = t.closest('[data-close]'); if (close) { const dialog=close.closest('dialog');if(dialog.id==='dlgForm'&&JSON.stringify(palomarFormValues())!==formInitial&&!window.confirm('¿Descartar los cambios sin guardar?'))return;dialog.close();return; }
+  const v = t.closest('nav.tabs [data-view]'); if (v) { ir(v.dataset.view); return; }
+  const vg = t.closest('[data-view-go]'); if (vg) { ir(vg.dataset.viewGo); return; }
+  const a = t.closest('[data-action]');
+  if (a) {
+    const act = a.dataset.action;
+    if (act === 'nuevo') abrirForm(null);
+    else if (act === 'datos') { actualizarDatosInfo(); $('#dlgDatos').showModal(); }
+    else if (act === 'exportar') exportar();
+
+    else if (act === 'csv-catalogo') { if (!state.embalajes.length) toast('No hay embalajes para exportar', 'error'); else palomarExportCsv(); }
+
+
+    else if (act === 'abrir-form') abrirForm(a.dataset.id);
+
+    return;
+  }
+  const det = t.closest('[data-det]'); if (det) { abrirDetalle(det.dataset.det); return; }
+  const ed = t.closest('[data-edit]'); if (ed) { abrirForm(ed.dataset.edit); return; }
+
+
+
+
+  const gal = t.closest('[data-gal]');
+  if (gal) {
+    const d = $('#dlgDet'), i = +gal.dataset.gal, im = d._imgs.find(x => x.i === i);
+    $('#galMain').innerHTML = `<img src="${im.url}" alt="${SLOTS[i]}" data-zoom="${i}">`;
+    $$('[data-gal]', d).forEach(b => b.setAttribute('aria-pressed', b === gal));
+    return;
+  }
+  const z = t.closest('[data-zoom]');
+  if (z) { $('#imgBig').src = z.src; $('#imgBig').alt = z.alt; $('#imgTitle').textContent = z.alt; $('#dlgImg').showModal(); return; }
+  const rm = t.closest('[data-rm]'); if (rm) { formState.imgs[+rm.dataset.rm] = null; pintarSlots(); return; }
+  const chipRm = t.closest('#provBox .chip button'); if (chipRm) { formState.provs.splice(+chipRm.dataset.i, 1); chipsProv(); $('#f_prov').focus(); return; }
+  if (t.id === 'provBox') $('#f_prov').focus();
+});
+document.addEventListener('keydown', ev => {
+  if (ev.key === 'Enter' && ev.target.matches('#gBody input[data-g]')) {
+    ev.preventDefault();
+    const tr = ev.target.closest('tr'), f = ev.target.dataset.f;
+    const sig = ev.shiftKey ? tr.previousElementSibling : tr.nextElementSibling;
+    const dest = sig && sig.querySelector(`input[data-f="${f}"]`);
+    if (dest) { dest.focus(); dest.select(); } else ev.target.blur();
+    return;
+  }
+  if ((ev.key === 'Enter' || ev.key === ' ') && ev.target.matches('tr[data-det],tr[data-inv]')) { ev.preventDefault(); ev.target.click(); }
+});
+
+document.addEventListener('change', async ev => {
+  const t = ev.target;
+  if (t.matches('#imgSlots input[type=file]')) {
+    const f = t.files && t.files[0]; if (!f) return;
+    if (!f.type.startsWith('image/')) { toast('El archivo tiene que ser una imagen', 'error'); return; }
+    const i = +t.dataset.slot;
+    try { const {blob, thumb} = await procesarImagen(f); formState.imgs[i] = {blob, thumb, changed: true}; pintarSlots(); }
+    catch { toast('No se pudo procesar la imagen', 'error'); }
+  }
+
+
+});
+$('#f_prov').addEventListener('keydown', ev => {
+  if (ev.key === 'Enter' || ev.key === ',') { ev.preventDefault(); agregarProv(); }
+  else if (ev.key === 'Backspace' && !ev.target.value && formState.provs.length) { formState.provs.pop(); chipsProv(); }
+});
+$('#f_prov').addEventListener('change', () => { if (state.proveedores.includes($('#f_prov').value)) agregarProv(); });
+$('#formEmb').addEventListener('submit', guardarForm);
+$('#dlgImg').addEventListener('close', () => { $('#imgBig').removeAttribute('src'); });
+$('#dlgDet').addEventListener('close', () => { detUrls.forEach(u => URL.revokeObjectURL(u)); detUrls = []; });
+
+const PALOMAR_URL='https://enacfespoldfksedmxuf.supabase.co';
+const PALOMAR_KEY='sb_publishable_z_W0qS3p6v_7CxFHxdkwAg_bQGQRWdL';
+let palomarClient=null,palomarUser=null,palomarEpoch=0,palomarTimer=null,palomarReading=false,palomarBusy=false,palomarReady=false;
+let formBlocked=false,formInitial='';
+let cordobaController=null,cordobaView='registro';
+function palomarNotice(message,error=false){const el=$('#onlineNotice');el.textContent=message;el.classList.toggle('online-error',error);}
+function palomarControls(){
+  $('#onlineLogout').disabled=palomarBusy||Boolean(cordobaController?.isBusy());
+  $('#onlineRefresh').disabled=palomarBusy||palomarReading||!palomarUser;
+  $$('[data-action="nuevo"]').forEach(b=>b.disabled=palomarBusy||palomarReading||!palomarReady);
+  $('#btnGuardar').disabled=palomarBusy||formBlocked||!palomarReady;
+  $('#reloadPalomar').disabled=palomarBusy||!palomarUser;
+  $$('#formEmb input,#formEmb textarea,#formEmb button[data-close]').forEach(b=>b.disabled=palomarBusy);
+}
+function palomarProveedores(){
+  state.proveedores=[...new Set(state.embalajes.flatMap(e=>e.proveedores))].sort((a,b)=>a.localeCompare(b,'es'));
+  $('#dl_prov').innerHTML=state.proveedores.map(p=>`<option value="${esc(p)}">`).join('');
+}
+function palomarLock(message='Ingresá con tu cuenta de la aplicación.'){
+  palomarEpoch++;clearInterval(palomarTimer);palomarUser=null;palomarReady=false;palomarReading=false;palomarBusy=false;
+  state.embalajes=[];state.inventarios=[];state.draft=null;state.proveedores=[];state.q='';state.prov='';state.gQ='';state.gTipo='';state.gSolo=false;
+  $$('dialog[open]').forEach(d=>d.close());$('#formEmb').reset();formState=null;formBlocked=false;formInitial='';
+  $('#main').replaceChildren();$('#toast').replaceChildren();$('#dl_prov').replaceChildren();
+  $('#detWrap').replaceChildren();$('#ciWrap').replaceChildren();$('#ivWrap').replaceChildren();
+  $('#palomarApp').hidden=true;$('#loginPalomar').hidden=false;$('#onlineEmail').textContent='';$('#pPassword').value='';$('#pLoginMessage').textContent=message;
+  cordobaController?.destroy();cordobaController=null;cordobaView='registro';$('#datosCordoba').textContent='Datos y respaldo Córdoba';$('#cordobaPanel').hidden=true;
+  $('#main').hidden=false;$('#datosPalomar').hidden=false;$('#onlineLoginSubmit').disabled=false;palomarControls();
+}
+
+async function palomarTimedFetch(url,options={}){
+  const c=new AbortController(),abort=()=>c.abort(),sig=options.signal;if(sig?.aborted)c.abort();sig?.addEventListener('abort',abort,{once:true});
+  const timer=setTimeout(abort,20000);try{return await fetch(url,{...options,signal:c.signal});}finally{clearTimeout(timer);sig?.removeEventListener('abort',abort);}
+}
+async function palomarRefresh({quiet=false,force=false}={}){
+  if(!palomarUser||palomarReading||palomarBusy||(!force&&$$('dialog[open]').length))return false;
+  const token=palomarEpoch;palomarReading=true;palomarControls();
+  try{
+    const rows=await palomarFetch(palomarClient);if(token!==palomarEpoch||(!force&&$$('dialog[open]').length))return false;
+    state.embalajes=rows;palomarProveedores();palomarReady=true;
+    palomarNotice(`Palomar conectado · ${rows.length} modelos · Última consulta ${new Date().toLocaleTimeString('es-AR')} · Actualización cada 10 s. Fotos e inventarios compartidos: próximo paso.`);
+    render();palomarControls();if(!quiet)toast('Catálogo actualizado desde Supabase.');return true;
+  }catch(e){if(token===palomarEpoch){palomarNotice('No se pudo actualizar Palomar. '+e.message,true);if(!quiet)toast(e.message,'error');}return false;}
+  finally{if(token===palomarEpoch){palomarReading=false;palomarControls();}}
+}
+async function palomarLogin(event){
+  event.preventDefault();if(!palomarClient)return;
+  $('#onlineLoginSubmit').disabled=true;$('#pLoginMessage').textContent='Iniciando sesión…';
+  const token=palomarEpoch;
+  try{
+    const {data,error}=await palomarClient.auth.signInWithPassword({email:$('#pEmail').value.trim(),password:$('#pPassword').value});
+    if(token!==palomarEpoch)return;if(error)throw error;if(!data.user||!data.session)throw Error('No se recibió una sesión.');
+    const access=await palomarClient.rpc('palomar_usuario_autorizado');
+    if(token!==palomarEpoch)return;if(access.error)throw Error('No se pudieron verificar los permisos de Palomar. Revisá que se haya ejecutado el SQL del paso 2. '+access.error.message);
+    if(access.data!==true)throw Error('Tu usuario no está autorizado para Palomar. Solicitá que se incorpore su UID a los permisos.');
+    palomarUser=data.user;$('#onlineEmail').textContent=data.user.email;$('#loginPalomar').hidden=true;$('#palomarApp').hidden=false;
+    state.view='grilla';await palomarRefresh({quiet:true});
+    if(token!==palomarEpoch)return;
+    palomarTimer=setInterval(()=>{if(!document.hidden&&state.view!=='cordoba')palomarRefresh({quiet:true});},10000);
+  }catch(e){if(token===palomarEpoch){palomarLock('No se pudo ingresar. '+e.message);try{await palomarClient.auth.signOut({scope:'local'});}catch{}}}
+  finally{$('#pPassword').value='';$('#onlineLoginSubmit').disabled=false;}
+}
+async function palomarLogout(){
+  if(palomarBusy)return;
+  if(cordobaController?.isBusy()){toast('Esperá a que termine el guardado de Córdoba.','error');return;}
+  const dirty=($('#dlgForm').open&&JSON.stringify(palomarFormValues())!==formInitial)||cordobaController?.isDirty();
+  if(dirty&&!window.confirm('Hay cambios sin guardar. ¿Cerrar sesión y descartarlos?'))return;
+  palomarLock('Sesión cerrada.');$('#onlineLoginSubmit').disabled=true;
+  try{const {error}=await palomarClient.auth.signOut({scope:'local'});if(error)$('#pLoginMessage').textContent='La información se ocultó. Recargá la página para descartar la sesión.';}
+  catch{$('#pLoginMessage').textContent='La información se ocultó. Recargá la página para descartar la sesión.';}
+  finally{$('#onlineLoginSubmit').disabled=false;}
+}
+function palomarFormValues(){return {codigo:$('#f_codigo').value,tipo:$('#f_tipo').value,descripcion:$('#f_desc').value,largo:$('#f_largo').value,ancho:$('#f_ancho').value,alto:$('#f_alto').value,peso:$('#f_peso').value,qme:$('#f_qme').value,stock:$('#f_flujo').value,obs:$('#f_obs').value,proveedores:formState?.provs??[],proveedorPendiente:$('#f_prov').value};}
+async function abrirForm(id){
+  if(!palomarUser||!palomarReady||palomarBusy||palomarReading)return;
+  const e=id?state.embalajes.find(x=>x.id===id):null;if(id&&!e)return;
+  $('#formEmb').reset();$$('.err,#formError').forEach(el=>el.textContent='');$$('.invalid').forEach(el=>el.classList.remove('invalid'));
+  formState={id:e?.id??null,version:e?.version??null,newId:e?null:crypto.randomUUID(),provs:[...(e?.proveedores??[])],imgs:[null,null,null,null]};
+  formBlocked=false;palomarFillForm(e);$('#formTitle').textContent=e?'Editar '+e.codigo:'Nuevo embalaje Palomar';
+  if($('#dlgDet').open)$('#dlgDet').close();$('#dlgForm').showModal();$('#f_codigo').focus();palomarControls();
+}
+function palomarFillForm(e){
+  const map={codigo:'codigo',tipo:'tipo',desc:'descripcion',largo:'largo',ancho:'ancho',alto:'alto',peso:'peso',qme:'qme',flujo:'racksEnFlujo',obs:'observaciones'};
+  for(const [input,key]of Object.entries(map))$('#f_'+input).value=e?.[key]??'';
+  $('#f_prov').value='';chipsProv();formInitial=JSON.stringify(palomarFormValues());
+}
+async function guardarForm(event){
+  event.preventDefault();if(palomarBusy||formBlocked||!palomarUser||!palomarReady)return;
+  if($('#f_prov').value.trim())agregarProv();if($('#f_prov').value.trim()){toast('Revisá el proveedor pendiente.','error');return;}
+  const values=validarForm();if(!values)return;
+  const candidate={...values,proveedores:[...formState.provs]};
+  const before=formState.id?{id:formState.id,version:formState.version}:null;
+  const token=palomarEpoch;palomarBusy=true;$('#formError').textContent='Guardando…';palomarControls();
+  try{
+    const saved=await palomarSave(palomarClient,candidate,before,formState.newId);if(token!==palomarEpoch)return;
+    state.embalajes=state.embalajes.filter(e=>e.id!==saved.id).concat(saved);palomarProveedores();$('#dlgForm').close();render();toast('Embalaje guardado en Supabase.');
+    palomarNotice('Guardado confirmado en Palomar. Actualización automática cada 10 s.');
+  }catch(e){if(token===palomarEpoch){$('#formError').textContent=e.message;if(e instanceof PalomarConflict||e instanceof PalomarUncertain)formBlocked=true;}}
+  finally{if(token===palomarEpoch){palomarBusy=false;palomarControls();}}
+}
+async function palomarReloadForm(){
+  if(palomarBusy||!palomarUser||!formState)return;
+  if(JSON.stringify(palomarFormValues())!==formInitial&&!window.confirm('Se descartarán los valores de esta ficha para consultar la última versión. ¿Continuar?'))return;
+  const token=palomarEpoch,id=formState.id??formState.newId;palomarBusy=true;$('#formError').textContent='Consultando…';palomarControls();
+  try{
+    const {data,error}=await palomarClient.from(PALOMAR_TABLE).select(PALOMAR_SELECT).eq('id',id).maybeSingle();
+    if(token!==palomarEpoch)return;if(error)throw error;
+    if(data){const saved=palomarDecode(data);formState.id=saved.id;formState.version=saved.version;formState.newId=null;formState.provs=[...saved.proveedores];palomarFillForm(saved);formBlocked=false;$('#formError').textContent='Última versión cargada. Revisá antes de guardar.';}
+    else if(formState.id){formBlocked=true;$('#formError').textContent='La ficha no está disponible para esta cuenta. Cerrá el formulario y actualizá.';}
+    else{formBlocked=false;$('#formError').textContent='No se encontró el alta de este intento. Podés revisar tus datos y volver a guardar.';}
+  }catch(e){if(token===palomarEpoch)$('#formError').textContent='No se pudo consultar: '+e.message;}
+  finally{if(token===palomarEpoch){palomarBusy=false;palomarControls();}}
+}
+function renderPendiente(m){m.innerHTML='<div class="panel empty"><h1>Próximo paso</h1><p>El inventario compartido y su historial se conectarán después de verificar el catálogo. Los conteos locales de la prueba anterior no se importan.</p></div>';}
+function renderTablero(m){
+  const completos=state.embalajes.filter(e=>!faltantes(e).length).length;
+  m.innerHTML=`<div class="page-head"><div><h1>Palomar · Catálogo compartido</h1><p>${state.embalajes.length} modelos · ${completos} completos · ${state.embalajes.length-completos} con datos pendientes.</p></div></div><div class="panel panel-pad"><p>El catálogo se guarda en Supabase. Los inventarios y las fotografías compartidas se habilitarán en el próximo paso.</p><button class="btn primary" data-view-go="embalajes">Ver catálogo</button></div>`;
+}
+function actualizarDatosInfo(){$('#dtUltimo').textContent='Palomar y Córdoba usan registros independientes. Las descargas de Palomar consultan primero la base completa.';}
+async function exportar(){
+  const token=palomarEpoch;if(!await palomarRefresh({quiet:true,force:true})||token!==palomarEpoch)return;
+  const rows=state.embalajes.map(e=>({...e}));
+  descargar(`catalogo_palomar_${hoy()}.json`,JSON.stringify({app:'palomar-catalogo-online',version:2,exportado:new Date().toISOString(),unidad_dimensiones:'mm',embalajes:rows},null,2),'application/json;charset=utf-8');
+  toast('Descarga del catálogo Palomar preparada.');
+}
+async function palomarExportCsv(){const token=palomarEpoch;if(await palomarRefresh({quiet:true,force:true})&&token===palomarEpoch)csvCatalogo();}
+$('#pLoginForm').addEventListener('submit',palomarLogin);
+$('#onlineLogout').addEventListener('click',palomarLogout);
+$('#onlineRefresh').addEventListener('click',()=>palomarRefresh());
+$('#datosCordoba').addEventListener('click',()=>{
+ if(!cordobaController||cordobaController.isBusy())return;
+ cordobaView=cordobaView==='registro'?'datos':'registro';cordobaController.setView(cordobaView);
+ $('#datosCordoba').textContent=cordobaView==='datos'?'Volver al registro Córdoba':'Datos y respaldo Córdoba';
+});
+$('#reloadPalomar').addEventListener('click',palomarReloadForm);
+$('#dlgForm').addEventListener('cancel',e=>{if(palomarBusy){e.preventDefault();return;}if(JSON.stringify(palomarFormValues())!==formInitial&&!window.confirm('¿Descartar los cambios sin guardar?'))e.preventDefault();});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)palomarRefresh({quiet:true});});
+window.addEventListener('beforeunload',e=>{if(palomarBusy||cordobaController?.isBusy()||cordobaController?.isDirty()||($('#dlgForm').open&&JSON.stringify(palomarFormValues())!==formInitial)){e.preventDefault();e.returnValue='';}});
+palomarLock();
+try{
+  if(typeof window.mountCordobaRegistro!=='function')throw Error('No se pudo cargar Córdoba. Revisá que cordoba-registro.js esté en public y recargá.');
+  if(!window.supabase)throw Error('No se pudo cargar la conexión. Revisá la red y recargá la página.');
+  palomarClient=window.supabase.createClient(PALOMAR_URL,PALOMAR_KEY,{auth:{persistSession:false,autoRefreshToken:true,detectSessionInUrl:false},global:{fetch:palomarTimedFetch}});
+  palomarClient.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'&&palomarUser)palomarLock('La sesión terminó. Ingresá nuevamente.');});
+}catch(e){$('#pLoginMessage').textContent=e.message;$('#onlineLoginSubmit').disabled=true;}
 
 </script>
-</body></html>
+</body>
+</html>
