@@ -308,8 +308,25 @@ th,td{border-bottom-color:rgba(148,163,184,0.14)}
 .draft-dot{background:#22D3EE}
 #dlgImg .dlg-head h2{color:#F8FAFC}
 </style>
+<style>
+/* Excepción autorizada: fondos originales de las imágenes corporativas. */
+.corporate-banner{display:grid;grid-template-columns:1fr 1fr;background:#243783}
+.corporate-logo{display:flex;align-items:center;justify-content:center;min-height:100px;padding:10px 18px}
+.corporate-logo.stellantis{background:#243783}
+.corporate-logo.logitex{background:#10529A}
+.corporate-logo.stellantis img{display:block;width:260px;max-width:100%;height:80px;object-fit:cover;object-position:center}
+.corporate-logo.logitex img{display:block;width:200px;max-width:100%;height:auto}
+.topbar{background:#243783}
+@media(max-width:480px){.corporate-logo{min-height:76px;padding:8px 12px}.corporate-logo.stellantis img{width:180px;height:60px}.corporate-logo.logitex img{width:140px}}
+</style>
 </head>
 <body>
+
+<div class="corporate-banner" aria-label="Stellantis y Logitex">
+ <div class="corporate-logo stellantis"><img src="./assets/stellantis.jpg" alt="Stellantis" width="694" height="440"></div>
+ <div class="corporate-logo logitex"><img src="./assets/logitex.png" alt="Logitex" width="200" height="53"></div>
+</div>
+
 <a class="sr-only" href="#main">Saltar al contenido</a>
 <section id="loginPalomar" class="online-login" aria-labelledby="onlineLoginTitle">
 <div class="panel panel-pad"><h1 id="onlineLoginTitle">Gestión de Embalajes</h1><p>Palomar y Córdoba · Ingresá con tu cuenta de la aplicación.</p>
